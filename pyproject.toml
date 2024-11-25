@@ -61,6 +61,7 @@ bam_data_store = "bam_data_store.cli:cli"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
+include = ["bam_data_store/*.py", "tests/*.py"]
 exclude = [
     ".bzr",
     ".direnv",
@@ -83,6 +84,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "dependencies",
 ]
 # Same as Black.
 line-length = 88
@@ -134,10 +136,12 @@ no_strict_optional = true
 disable_error_code = "import, annotation-unchecked"
 
 [tool.setuptools]
-package-dir = { "" = "src" }
+package-dir = { "" = "bam_data_store" }
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["bam_data_store"]
+exclude = ["dependencies*"]
+namespaces = false
 
 [tool.setuptools_scm]
-write_to = "src/bam_data_store/_version.py"
+write_to = "bam_data_store/_version.py"

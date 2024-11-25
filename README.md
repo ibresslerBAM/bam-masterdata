@@ -1,93 +1,130 @@
 # BAMDataStore
 
+This is the main repository of the BAM Data Store project. This is both a Python package and a web connecting the different resources for the Data Store.
 
 
+<!--
 ## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+ Add here installation instructions once the package is deployed -->
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Development
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://git.bam.de/bam-data-store/bamdatastore.git
-git branch -M main
-git push -uf origin main
+If you want to develop locally this package, clone the project and enter in the workspace folder:
+```sh
+git clone https://git.bam.de/bam-data-store/bam-data-store.git
+cd bam-data-store
 ```
 
-## Integrate with your tools
+Create a virtual environment (you can use Python>3.9) in your workspace:
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-- [ ] [Set up project integrations](https://git.bam.de/bam-data-store/bamdatastore/-/settings/integrations)
+Run the following script:
+```sh
+./scripts/install_python_dependencies
+```
 
-## Collaborate with your team
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### Run the tests
 
-## Test and Deploy
+You can locally run the tests by doing:
+```sh
+python -m pytest -sv tests
+```
 
-Use the built-in continuous integration in GitLab.
+where the `-s` and `-v` options toggle the output verbosity.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+You can also generate a local coverage report:
+```sh
+python -m pytest --cov=src tests
+```
 
-***
+### Run auto-formatting and linting
 
-# Editing this README
+We use [Ruff](https://docs.astral.sh/ruff/) for formatting and linting the code following the rules specified in the `pyproject.toml`. You can run locally:
+```sh
+ruff check .
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+This will produce an output with the specific issues found. In order to auto-fix them, run:
+```sh
+ruff format . --check
+```
 
-## Suggestions for a good README
+If some issues are not possible to fix automatically, you will need to visit the file and fix them by hand.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Run the local website
 
-## Name
-Choose a self-explaining name for your project.
+**Under construction!**
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+<!-- ### Debugging
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+For interactive debugging of the tests, use `pytest` with the `--pdb` flag. We recommend using an IDE for debugging, e.g., _VSCode_. If that is the case, add the following snippet to your `.vscode/launch.json`:
+```json
+{
+  "configurations": [
+      {
+        "name": "<descriptive tag>",
+        "type": "debugpy",
+        "request": "launch",
+        "cwd": "${workspaceFolder}",
+        "program": "${workspaceFolder}/.pyenv/bin/pytest",
+        "justMyCode": true,
+        "env": {
+            "_PYTEST_RAISE": "1"
+        },
+        "args": [
+            "-sv",
+            "--pdb",
+            "<path-to-plugin-tests>",
+        ]
+    }
+  ]
+}
+```
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+where `<path-to-plugin-tests>` must be changed to the local path to the test module to be debugged.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+The settings configuration file `.vscode/settings.json` automatically applies the linting and formatting upon saving the modified file. -->
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### Documentation on Github pages
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+To view the documentation locally, make sure to have installed the extra packages (this is part of the `scripts/install_python_dependencies.sh`, so if you ran this script before, you don't need to do it again now):
+```sh
+uv pip install -e '[docu]'
+```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+The first time, build the server:
+```sh
+mkdocs build
+```
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Run the documentation server:
+```sh
+mkdocs serve
+```
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+The output looks like:
+```sh
+INFO    -  Building documentation...
+INFO    -  Cleaning site directory
+INFO    -  [14:07:47] Watching paths for changes: 'docs', 'mkdocs.yml'
+INFO    -  [14:07:47] Serving on http://127.0.0.1:8000/
+```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+Simply click on `http://127.0.0.1:8000/`. The changes in the `md` files of the documentation are inmediately reflected when the files are saved (the local web will automatically refresh).
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## Main contributors
 
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+| Name | E-mail     | Role |
+|------|------------|--------|
+| Dr. Angela Ariza | [angela.ariza@bam.de](mailto:angela.ariza@bam.de) | Outreach and Training |
+| Caroline Demidova | [caroline.demidova@bam.de](mailto:caroline.demidova@bam.de) | Outreach and Training |
+| Daniel Kosztyla | [daniel.kosztyla@bam.de](mailto:daniel.kosztyla@bam.de) | IT |
+| Carlos Madariaga | [carlos.madariaga@bam.de](mailto:carlos.madariaga@bam.de) | Software Developer |
+| Kristina Meindl | [kristina.meindl@bam.de](mailto:kristina.meindl@bam.de) | Project Manager |
+| Dr. Jose M. Pizarro | [jose.pizarro-blanco@bam.de](mailto:jose.pizarro-blanco@bam.de) | Data Management |
+| Jörg Rädler | [joerg.raedler@bam.de](mailto:joerg.raedler@bam.de) | IT |
