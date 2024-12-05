@@ -26,10 +26,11 @@ maintainers = [
 ]
 license = { file = "LICENSE" }
 dependencies = [
-  "pybis",
+  "pybis<=1.36.3",
   "pandas",
   "openpyxl",
   "click",
+  "pydantic",
 ]
 
 [project.urls]
@@ -43,6 +44,7 @@ dev = [
   "pytest",
   "pytest-timeout",
   "pytest-cov",
+  "python-decouple",
 ]
 jupy = [
   "jupyterlab",
@@ -135,11 +137,8 @@ follow_imports = "silent"
 no_strict_optional = true
 disable_error_code = "import, annotation-unchecked"
 
-[tool.setuptools]
-package-dir = { "" = "bam_data_store" }
-
 [tool.setuptools.packages.find]
-where = ["bam_data_store"]
+where = ["."]
 exclude = ["dependencies*"]
 namespaces = false
 
