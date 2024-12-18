@@ -133,5 +133,5 @@ class PropertyType(BaseEntity):
     pass
 
 
-class CollectionType(BaseEntity):
+class CollectionType(ObjectType):
     pass
