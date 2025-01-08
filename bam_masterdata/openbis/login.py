@@ -12,5 +12,5 @@ def ologin() -> Openbis:
     """
     url = environ('URL')
     o = Openbis(url)
-    o.login(environ('USERNAME'), environ('PASSWORD'), save_token=True)
+    o.login(environ('USRNAME'), environ('PASSWORD'), save_token=True)
     return o

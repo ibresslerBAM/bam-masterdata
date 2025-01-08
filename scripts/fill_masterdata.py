@@ -49,8 +49,10 @@ class MasterdataCodeGenerator:
             # Determine parent class
             if '.' in code:
                 parent_code = code.rsplit('.', 1)[0]
-                parent_class = class_names.get(parent_code, 'ObjectType')
+                parent_class_name = parent_code.split('.')[-1].title().replace('_', '').replace('$', '')
+                parent_class = class_names.get(parent_code, parent_class_name)
             else:
+                # Default to ObjectType if no dots in the code
                 parent_class = 'ObjectType'
 
             # Format class name
@@ -62,7 +64,7 @@ class MasterdataCodeGenerator:
             lines.append('    defs = ObjectTypeDef(')
             lines.append(f"        code='{code}',")
             description = (
-                (data.get('description') or '').replace('\\"', '"').replace('\n', '\\n')
+                (data.get('description') or '').replace('\\"', '"').replace('\n', '\\n').replace("'", "\\'")
             )
             lines.append(f"        description='{description}',")
             lines.append(
@@ -85,12 +87,14 @@ class MasterdataCodeGenerator:
                     (prop_data.get('label') or '')
                     .replace('"', '\\"')
                     .replace('\n', '\\n')
+                    .replace("'", "\\'")
                 )
                 lines.append(f"        property_label='{property_label}',")
                 description = (
                     (prop_data.get('description') or '')
                     .replace('\\"', '"')
                     .replace('\n', '\\n')
+                    .replace("'", "\\'")
                 )
                 lines.append(f"        description='{description}',")
                 lines.append(f"        mandatory={prop_data.get('mandatory', False)},")
@@ -101,6 +105,7 @@ class MasterdataCodeGenerator:
                     (prop_data.get('section') or '')
                     .replace('"', '\\"')
                     .replace('\n', '\\n')
+                    .replace("'", "\\'")
                 )
                 lines.append(f"        section='{section}',")
                 lines.append('    )')
@@ -145,7 +150,7 @@ class MasterdataCodeGenerator:
             lines.append('    defs = CollectionTypeDef(')
             lines.append(f"        code='{code}',")
             description = (
-                (data.get('description') or '').replace('"', '\\"').replace('\n', '\\n')
+                (data.get('description') or '').replace('"', '\\"').replace('\n', '\\n').replace("'", "\\'")
             )
             lines.append(f"        description='{description}',")
             if data.get('validationPlugin') != '':
@@ -192,12 +197,12 @@ class MasterdataCodeGenerator:
             lines.append(f'{class_name} = PropertyTypeDef(')
             lines.append(f"    code='{code}',")
             description = (
-                (data.get('description') or '').replace('\\"', '"').replace('\n', '\\n')
+                (data.get('description') or '').replace('\\"', '"').replace('\n', '\\n').replace("'", "\\'")
             )
             lines.append(f"    description='{description}',")
             lines.append(f"    data_type='{data.get('dataType', '')}',")
             property_label = (
-                (data.get('label') or '').replace('"', '\\"').replace('\n', '\\n')
+                (data.get('label') or '').replace('"', '\\"').replace('\n', '\\n').replace("'", "\\'")
             )
             lines.append(f"    property_label='{property_label}',")
             lines.append(')')
@@ -217,14 +222,14 @@ class MasterdataCodeGenerator:
             str: Python code for the dataset types.
         """
         lines = []
+        class_names = {}
 
         def format_class_name(code):
-            return code.title().replace('_', '')
+            return code.split('.')[-1].title().replace('_', '').replace('$', '')
 
         # Add imports at the top
-        lines.append('from bam_masterdata.metadata.entities import DatasetType')
-        lines.append('')
         lines.append('from bam_masterdata.metadata.definitions import DataSetTypeDef')
+        lines.append('from bam_masterdata.metadata.entities import DatasetType')
         lines.append('')
         lines.append('')
 
@@ -233,15 +238,24 @@ class MasterdataCodeGenerator:
             # Skip the "UNKNOWN" object type
             if code == 'UNKNOWN':
                 continue
+            
+            # Determine parent class
+            if '.' in code:
+                parent_code = code.rsplit('.', 1)[0]
+                parent_class_name = parent_code.split('.')[-1].title().replace('_', '')
+                parent_class = class_names.get(parent_code, parent_class_name)
+            else:
+                # Default to ObjectType if no dots in the code
+                parent_class = 'DatasetType'
 
             class_name = format_class_name(code)
 
             # Add class definition
-            lines.append(f'class {class_name}(DatasetType):')
+            lines.append(f'class {class_name}({parent_class}):')
             lines.append('    defs = DataSetTypeDef(')
             lines.append(f"        code='{code}',")
             description = (
-                (data.get('description') or '').replace('"', '\\"').replace('\n', '\\n')
+                (data.get('description') or '').replace('"', '\\"').replace('\n', '\\n').replace("'", "\\'")
             )
             lines.append(f"        description='{description}',")
             lines.append('    )')
@@ -283,8 +297,10 @@ class MasterdataCodeGenerator:
             # Determine parent class
             if '.' in code:
                 parent_code = code.rsplit('.', 1)[0]
-                parent_class = class_names.get(parent_code, 'VocabularyType')
+                parent_class_name = parent_code.split('.')[-1].title().replace('_', '').replace('$', '')
+                parent_class = class_names.get(parent_code, parent_class_name)
             else:
+                # Default to ObjectType if no dots in the code
                 parent_class = 'VocabularyType'
 
             # Format class name
@@ -296,7 +312,7 @@ class MasterdataCodeGenerator:
             lines.append('    defs = VocabularyTypeDef(')
             lines.append(f"        code='{code}',")
             description = (
-                (data.get('description') or '').replace('"', '\\"').replace('\n', '\\n')
+                (data.get('description') or '').replace('"', '\\"').replace('\n', '\\n').replace("'", "\\'")
             )
             lines.append(f"        description='{description}',")
             lines.append('    )')
@@ -321,10 +337,20 @@ class MasterdataCodeGenerator:
                     term_name = 'i'
                 lines.append(f'    {term_name} = VocabularyTerm(')
                 lines.append(f"        code='{term_code}',")
-                lines.append(f"        label='{term_data.get('label', '')}',")
-                lines.append(
-                    f"        description='{term_data.get('description', '')}',"
+                label = (
+                    (term_data.get('label') or '')
+                    .replace('\\"', '"')
+                    .replace('\n', '\\n')
+                    .replace("'", "\\'")
                 )
+                lines.append(f"        label='{label}',")
+                description = (
+                    (term_data.get('description') or '')
+                    .replace('\\"', '"')
+                    .replace('\n', '\\n')
+                    .replace("'", "\\'")
+                )
+                lines.append(f"        description='{description}',")
                 lines.append('    )')
                 lines.append('')
 
