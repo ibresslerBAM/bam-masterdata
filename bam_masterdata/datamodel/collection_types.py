@@ -17,8 +17,8 @@ class DefaultExperiment(CollectionType):
     )
 
 
-class DropboxCollection(CollectionType):
+class MeasurementsCollection(CollectionType):
     defs = CollectionTypeDef(
-        code='DROPBOX_COLLECTION',
-        description='Test collection type to test collection properties in dropboxsystem',
+        code='MEASUREMENTS_COLLECTION',
+        description='Contains individual measurements, common metadata//Enthält individuelle Messungen, gemeinsame Metadaten',
     )
