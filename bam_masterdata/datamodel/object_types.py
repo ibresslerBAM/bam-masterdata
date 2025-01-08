@@ -12160,7 +12160,7 @@ class WeldingEquipment(Instrument):
     )
 
 
-class StationLayout(Equipment):
+class StationLayoutEquipment(Equipment):
     defs = ObjectTypeDef(
         code='WELDING.EQUIPMENT.STATION_LAYOUT',
         description='Layout and configuration of a welding station',
@@ -13022,7 +13022,7 @@ class StationLayout(Equipment):
     )
 
 
-class StationLayout(WeldingEquipment):
+class StationLayoutWeldingEquipment(WeldingEquipment):
     defs = ObjectTypeDef(
         code='INSTRUMENT.WELDING_EQUIPMENT.STATION_LAYOUT',
         description='Layout and configuration of a welding station',
@@ -16048,7 +16048,7 @@ class Control(ObjectType):
     )
 
 
-class Freezer(Control):
+class FreezerControl(Control):
     defs = ObjectTypeDef(
         code='CONTROL.FREEZER',
         description='This Object allows to store temperature data as a control point for a Freezer//Dieses Objekt erlaubt einen Kontrollpunkt für ein Kühlgerät zu erstellen',
@@ -16136,7 +16136,7 @@ class Freezer(Control):
     )
 
 
-class Freezer(Instrument):
+class FreezerInstrument(Instrument):
     defs = ObjectTypeDef(
         code='INSTRUMENT.FREEZER',
         description='Cooling Device//Kühlgerät',
