@@ -1,6 +1,6 @@
-import os
 import time
-from pathlib import Path
+
+import click
 
 from bam_masterdata.openbis import OpenbisEntities
 
@@ -20,7 +20,7 @@ class MasterdataCodeGenerator:
         self.objects = OpenbisEntities().get_object_dict()
         self.vocabularies = OpenbisEntities().get_vocabulary_dict()
         elapsed_time = time.time() - start_time
-        print(
+        click.echo(
             f"Loaded OpenBIS entities in `MasterdataCodeGenerator` initialization {elapsed_time:.2f} seconds\n"
         )
 
@@ -75,7 +75,7 @@ class MasterdataCodeGenerator:
         return parent_code, parent_class, class_name
 
     def add_properties(
-        self, entities: dict, parent_code: str, data: str, lines: list
+        self, entities: dict, parent_code: str, data: dict, lines: list
     ) -> None:
         """
         Add the properties of the entity to the `lines` list. The properties are added as
@@ -84,7 +84,7 @@ class MasterdataCodeGenerator:
         Args:
             entities (dict): The dictionary of entities (objects, collections, datasets, vocabularies).
             parent_code (code): The code of the parent class.
-            data (str): The data information for the entity as obtained from openBIS.
+            data (dict): The data information for the entity as obtained from openBIS.
             lines (list): A list of strings to be printed to the Python module.
         """
         parent_properties = entities.get(parent_code, {}).get("properties", {}).keys()
@@ -100,6 +100,9 @@ class MasterdataCodeGenerator:
             prop_name = prop_code.lstrip("$").replace(".", "_").lower()
             lines.append(f"    {prop_name} = PropertyTypeAssignment(")
             lines.append(f'        code="{prop_code}",')
+            # ! patching dataType=SAMPLE instead of OBJECT
+            if prop_data.get("dataType", "") == "SAMPLE":
+                prop_data["dataType"] = "OBJECT"
             lines.append(f"        data_type=\"{prop_data.get('dataType', '')}\",")
             property_label = (prop_data.get("label") or "").replace("\n", "\\n")
             lines.append(f'        property_label="{property_label}",')
@@ -157,6 +160,9 @@ class MasterdataCodeGenerator:
                 .replace("'", "`")
             )
             lines.append(f'    description="""{description}""",')
+            # ! patching dataType=SAMPLE instead of OBJECT
+            if data.get("dataType", "") == "SAMPLE":
+                data["dataType"] = "OBJECT"
             lines.append(f"    data_type=\"{data.get('dataType', '')}\",")
             property_label = (
                 (data.get("label") or "").replace('"', '\\"').replace("\n", "\\n")
@@ -179,7 +185,7 @@ class MasterdataCodeGenerator:
             str: Python code for the collection types.
         """
         lines = []
-        class_names = {}
+        class_names: dict = {}
 
         # Add imports at the top
         lines.append(
@@ -237,7 +243,7 @@ class MasterdataCodeGenerator:
             str: Python code for the dataset types.
         """
         lines = []
-        class_names = {}
+        class_names: dict = {}
 
         # Add imports at the top
         lines.append(
@@ -288,7 +294,7 @@ class MasterdataCodeGenerator:
             str: Python code for the object types.
         """
         lines = []
-        class_names = {}
+        class_names: dict = {}
 
         # Add imports at the top
         lines.append(
@@ -342,7 +348,7 @@ class MasterdataCodeGenerator:
             str: Python code for the vocabulary types.
         """
         lines = []
-        class_names = {}
+        class_names: dict = {}
 
         # Add imports at the top
         lines.append(
@@ -404,9 +410,8 @@ class MasterdataCodeGenerator:
                     term_name = "i"
                 lines.append(f"    {term_name} = VocabularyTerm(")
                 lines.append(f'        code="{term_code}",')
-                lines.append(
-                    f"        label=\"{(term_data.get('label') or '').replace('\"', '')}\","
-                )
+                label = (term_data.get("label") or "").replace('"', "")
+                lines.append(f'        label="{label}",')
                 description = (
                     (term_data.get("description") or "")
                     .replace('"', "`")
@@ -421,35 +426,3 @@ class MasterdataCodeGenerator:
             lines.append("")
 
         return "\n".join(lines)
-
-
-if __name__ == "__main__":
-    start_time = time.time()
-
-    # ! this takes a lot of time loading all the entities in Openbis
-    generator = MasterdataCodeGenerator()
-
-    # Add each module to the `bam_masterdata/datamodel` directory
-    output_dir = os.path.join(".", "bam_masterdata", "datamodel")
-    for module_name in ["property", "collection", "dataset", "object", "vocabulary"]:
-        module_start_time = time.perf_counter()  # more precise time measurement
-        output_file = Path(os.path.join(output_dir, f"{module_name}_types.py"))
-
-        # Get the method from `MasterdataCodeGenerator`
-        code = getattr(generator, f"generate_{module_name}_types")()
-        code = code.rstrip("\n") + "\n"
-        output_file.write_text(code, encoding="utf-8")
-        module_elapsed_time = time.perf_counter() - module_start_time
-        print(
-            f"Generated {module_name} types in {module_elapsed_time:.2f} seconds in {output_file}\n"
-        )
-
-    elapsed_time = time.time() - start_time
-    print(f"Generated all types in {elapsed_time:.2f} seconds\n\n")
-
-    # ! this could be automated in the CLI
-    print(
-        "Don't forget to apply ruff at the end after generating the files by doing:\n"
-    )
-    print("    ruff check .\n")
-    print("    ruff format .\n")
