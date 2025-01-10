@@ -3,6 +3,7 @@ import time
 import click
 
 from bam_masterdata.openbis import OpenbisEntities
+from bam_masterdata.openbis.login import environ
 
 
 class MasterdataCodeGenerator:
@@ -11,14 +12,14 @@ class MasterdataCodeGenerator:
     openBIS instance.
     """
 
-    def __init__(self):
+    def __init__(self, url: str = ""):
         start_time = time.time()
         # * This part takes some time due to the loading of all entities from Openbis
-        self.properties = OpenbisEntities().get_property_dict()
-        self.collections = OpenbisEntities().get_collection_dict()
-        self.datasets = OpenbisEntities().get_dataset_dict()
-        self.objects = OpenbisEntities().get_object_dict()
-        self.vocabularies = OpenbisEntities().get_vocabulary_dict()
+        self.properties = OpenbisEntities(url=url).get_property_dict()
+        self.collections = OpenbisEntities(url=url).get_collection_dict()
+        self.datasets = OpenbisEntities(url=url).get_dataset_dict()
+        self.objects = OpenbisEntities(url=url).get_object_dict()
+        self.vocabularies = OpenbisEntities(url=url).get_vocabulary_dict()
         elapsed_time = time.time() - start_time
         click.echo(
             f"Loaded OpenBIS entities in `MasterdataCodeGenerator` initialization {elapsed_time:.2f} seconds\n"
@@ -103,7 +104,7 @@ class MasterdataCodeGenerator:
             # ! patching dataType=SAMPLE instead of OBJECT
             if prop_data.get("dataType", "") == "SAMPLE":
                 prop_data["dataType"] = "OBJECT"
-            lines.append(f"        data_type=\"{prop_data.get('dataType', '')}\",")
+            lines.append(f'        data_type="{prop_data.get("dataType", "")}",')
             property_label = (prop_data.get("label") or "").replace("\n", "\\n")
             lines.append(f'        property_label="{property_label}",')
             description = (
@@ -163,7 +164,7 @@ class MasterdataCodeGenerator:
             # ! patching dataType=SAMPLE instead of OBJECT
             if data.get("dataType", "") == "SAMPLE":
                 data["dataType"] = "OBJECT"
-            lines.append(f"    data_type=\"{data.get('dataType', '')}\",")
+            lines.append(f'    data_type="{data.get("dataType", "")}",')
             property_label = (
                 (data.get("label") or "").replace('"', '\\"').replace("\n", "\\n")
             )
@@ -222,7 +223,7 @@ class MasterdataCodeGenerator:
             lines.append(f'        description="""{description}""",')
             if data.get("validationPlugin") != "":
                 lines.append(
-                    f"        validation_script=\"{data.get('validationPlugin')}\","
+                    f'        validation_script="{data.get("validationPlugin")}",'
                 )
             lines.append("    )")
             lines.append("")
@@ -327,7 +328,7 @@ class MasterdataCodeGenerator:
             )
             lines.append(f'        description="""{description}""",')
             lines.append(
-                f"        generated_code_prefix=\"{data.get('generatedCodePrefix', '')}\","
+                f'        generated_code_prefix="{data.get("generatedCodePrefix", "")}",'
             )
             lines.append("    )")
             lines.append("")
