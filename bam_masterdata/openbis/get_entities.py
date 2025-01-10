@@ -1,4 +1,4 @@
-from bam_masterdata.openbis.login import ologin
+from bam_masterdata.openbis.login import environ, ologin
 
 
 class OpenbisEntities:
@@ -7,8 +7,8 @@ class OpenbisEntities:
     Python modules of `bam_masterdata/datamodel/`.
     """
 
-    def __init__(self):
-        self.openbis = ologin()
+    def __init__(self, url: str = ""):
+        self.openbis = ologin(url=url)
 
     def _get_formatted_dict(self, entity_name: str):
         # entity_name is property_types, collection_types, dataset_types, object_types, or vocabularies
@@ -29,6 +29,7 @@ class OpenbisEntities:
                 # Create a dictionary of properties using the correct permId
                 properties = {}
                 for entry in assignments_dict:
+                    # ! This has changed and now permId does not exist on the property assignments!!
                     property_perm_id = (
                         entry.get("permId", {}).get("propertyTypeId", {}).get("permId")
                     )
@@ -59,6 +60,7 @@ class OpenbisEntities:
                             "plugin": entry.get("plugin", ""),
                         }
 
+                # ! This has changed and now permId, label, and description do not exist on the property assignments!!
                 for prop in assignments:
                     properties[prop.permId].update(
                         {
