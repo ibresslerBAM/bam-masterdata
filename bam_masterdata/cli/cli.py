@@ -83,15 +83,38 @@ def fill_masterdata(url):
     name="export_to_json",
     help="Export entities to JSON files to the `./artifacts/` folder.",
 )
-def export_to_json():
+@click.option(
+    "--force-delete",
+    type=bool,
+    required=False,
+    default=False,
+    help="""
+    (Optional) If set to `True`, it will delete the current `./artifacts/` folder and create a new one. Default is `False`.
+    """,
+)
+@click.option(
+    "--python-path",
+    type=str,
+    required=False,
+    default=DATAMODEL_DIR,
+    help="""
+    (Optional) The path to the individual Python module or the directory containing the Python modules to process the datamodel.
+    Default is `./bam_masterdata/datamodel/`.
+    """,
+)
+def export_to_json(force_delete, python_path):
     # Get the directories from the Python modules and the export directory for the static artifacts
     export_dir = os.path.join(".", "artifacts")
 
     # Delete and create the export directory
-    delete_and_create_dir(directory_path=export_dir, logger=logger)
+    delete_and_create_dir(
+        directory_path=export_dir,
+        logger=logger,
+        force_delete=force_delete,
+    )
 
     # Get the Python modules to process the datamodel
-    py_modules = listdir_py_modules(directory_path=DATAMODEL_DIR, logger=logger)
+    py_modules = listdir_py_modules(directory_path=python_path, logger=logger)
 
     # Process each module using the `to_json` method of each entity
     for module_path in py_modules:
@@ -104,9 +127,38 @@ def export_to_json():
     name="export_to_excel",
     help="Export entities to an Excel file in the path `./artifacts/masterdata.xlsx`.",
 )
-def export_to_excel():
+@click.option(
+    "--force-delete",
+    type=bool,
+    required=False,
+    default=False,
+    help="""
+    (Optional) If set to `True`, it will delete the current `./artifacts/` folder and create a new one. Default is `False`.
+    """,
+)
+@click.option(
+    "--python-path",
+    type=str,
+    required=False,
+    default=DATAMODEL_DIR,
+    help="""
+    (Optional) The path to the individual Python module or the directory containing the Python modules to process the datamodel.
+    Default is `./bam_masterdata/datamodel/`.
+    """,
+)
+def export_to_excel(force_delete, python_path):
+    # Get the directories from the Python modules and the export directory for the static artifacts
+    export_dir = os.path.join(".", "artifacts")
+
+    # Delete and create the export directory
+    delete_and_create_dir(
+        directory_path=export_dir,
+        logger=logger,
+        force_delete=force_delete,
+    )
+
     # Get the Python modules to process the datamodel
-    py_modules = listdir_py_modules(directory_path=DATAMODEL_DIR, logger=logger)
+    py_modules = listdir_py_modules(directory_path=python_path, logger=logger)
 
     # Load the definitions module classes
     definitions_module = import_module(
