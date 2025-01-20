@@ -81,6 +81,9 @@ class MasterdataCodeGenerator:
         Add the properties of the entity to the `lines` list. The properties are added as
         `PropertyTypeAssignment` objects.
 
+        Note: the assigned properties do not have the information of `code` for the entity when
+        data_type is OBJECT or CONTROLLEDVOCABULARY. These are instead defined in `property_types.py`.
+
         Args:
             entities (dict): The dictionary of entities (objects, collections, datasets, vocabularies).
             parent_code (code): The code of the parent class.
@@ -101,9 +104,10 @@ class MasterdataCodeGenerator:
             lines.append(f"    {prop_name} = PropertyTypeAssignment(")
             lines.append(f'        code="{prop_code}",')
             # ! patching dataType=SAMPLE instead of OBJECT
-            if prop_data.get("dataType", "") == "SAMPLE":
-                prop_data["dataType"] = "OBJECT"
-            lines.append(f'        data_type="{prop_data.get("dataType", "")}",')
+            data_type = prop_data.get("dataType", "")
+            if data_type == "SAMPLE":
+                data_type = "OBJECT"
+            lines.append(f'        data_type="{data_type}",')
             property_label = (prop_data.get("label") or "").replace("\n", "\\n")
             lines.append(f'        property_label="{property_label}",')
             description = (
@@ -161,12 +165,18 @@ class MasterdataCodeGenerator:
             )
             lines.append(f'    description="""{description}""",')
             # ! patching dataType=SAMPLE instead of OBJECT
-            if data.get("dataType", "") == "SAMPLE":
-                data["dataType"] = "OBJECT"
-            lines.append(f'    data_type="{data.get("dataType", "")}",')
+            data_type = data.get("dataType", "")
+            object_type = data.get("sampleType", {})
+            if data_type == "SAMPLE":
+                data_type = "OBJECT"
+            lines.append(f'    data_type="{data_type}",')
+            if object_type and isinstance(object_type, dict):
+                lines.append(f'    object_code="{object_type.get("code", "")}",')
             property_label = (
                 (data.get("label") or "").replace('"', '\\"').replace("\n", "\\n")
             )
+            if data.get("dataType", "") == "CONTROLLEDVOCABULARY":
+                lines.append(f'    vocabulary_code="{data.get("vocabulary", "")}",')
             lines.append(f'    property_label="{property_label}",')
             lines.append(")")
             lines.append("")

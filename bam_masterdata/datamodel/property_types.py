@@ -20,6 +20,7 @@ DefaultCollectionView = PropertyTypeDef(
     code="$DEFAULT_COLLECTION_VIEW",
     description="""Default view for experiments of the type collection""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="$DEFAULT_COLLECTION_VIEWS",
     property_label="Default collection view",
 )
 
@@ -100,6 +101,7 @@ AccuracyClassVde0410 = PropertyTypeDef(
     code="ACCURACY_CLASS_VDE0410",
     description="""Accuracy Class according to VDE 0410//Genauigkeitsklasse anch VDE 0410""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ACCURACY_CLASS_VDE0410",
     property_label="Accuracy Class according to VDE 0410",
 )
 
@@ -116,6 +118,7 @@ ActingPerson = PropertyTypeDef(
     code="ACTING_PERSON",
     description="""Acting Person//Handelnde Person""",
     data_type="OBJECT",
+    object_code="PERSON.BAM",
     property_label="Acting Person",
 )
 
@@ -196,6 +199,7 @@ AluTreatmentFirst = PropertyTypeDef(
     code="ALU_TREATMENT_FIRST",
     description="""First Treatment//Erste Behandlung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_TREATMENT_ALU",
     property_label="First Treatment",
 )
 
@@ -204,6 +208,7 @@ AluTreatmentFourth = PropertyTypeDef(
     code="ALU_TREATMENT_FOURTH",
     description="""Fourth Treatment//Vierte Behandlung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_TREATMENT_ALU",
     property_label="Fourth Treatment",
 )
 
@@ -212,6 +217,7 @@ AluTreatmentSecond = PropertyTypeDef(
     code="ALU_TREATMENT_SECOND",
     description="""Second Treatment//Zweite Behandlung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_TREATMENT_ALU",
     property_label="Second Treatment",
 )
 
@@ -220,6 +226,7 @@ AluTreatmentThird = PropertyTypeDef(
     code="ALU_TREATMENT_THIRD",
     description="""Third Treatment//Dritte Behandlung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_TREATMENT_ALU",
     property_label="Third Treatment",
 )
 
@@ -284,6 +291,7 @@ AssociatedProject = PropertyTypeDef(
     code="ASSOCIATED_PROJECT",
     description="""Associated project//Assoziiertes Projekt""",
     data_type="OBJECT",
+    object_code="PROJECT",
     property_label="Associated project",
 )
 
@@ -292,6 +300,7 @@ AtomisticCalcType = PropertyTypeDef(
     code="ATOMISTIC_CALC_TYPE",
     description="""Type of atomistic calculation//Art der atomistischen Berechnung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ATOMISTIC_CALC_TYPE",
     property_label="Atomistic Calculation Type",
 )
 
@@ -412,6 +421,7 @@ AtomElecMinAlgo = PropertyTypeDef(
     code="ATOM_ELEC_MIN_ALGO",
     description="""Minimization algorithm for electronic steps//Minimalisierungsalgorithmus zur elektronischen Schritten""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="MINIMIZATION_ALGO",
     property_label="Minimization Algorithm for Electronic Steps",
 )
 
@@ -532,6 +542,7 @@ AtomIonicMinAlgo = PropertyTypeDef(
     code="ATOM_IONIC_MIN_ALGO",
     description="""Minimization algorithm for ionic steps//Minimalisierungsalgorithmus zur ionischen Schritten""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="MINIMIZATION_ALGO",
     property_label="Minimization Algorithm for Ionic Steps",
 )
 
@@ -548,6 +559,7 @@ AtomKpointType = PropertyTypeDef(
     code="ATOM_KPOINT_TYPE",
     description="""K-points specification type//K-Punkte-Spezifikation Typ""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ATOM_KPOINT_TYPE",
     property_label="K-points Specification Type",
 )
 
@@ -572,6 +584,7 @@ AtomMdEnsemble = PropertyTypeDef(
     code="ATOM_MD_ENSEMBLE",
     description="""Statistical ensemble set in the simulation//Statistisches Ensemble in der Simulation""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="THERMODYN_ENSEMBLE",
     property_label="Statistical Ensemble",
 )
 
@@ -636,6 +649,7 @@ AtomPotentialStyle = PropertyTypeDef(
     code="ATOM_POTENTIAL_STYLE",
     description="""Interatomic Potential Style//Interatomarer Potential Stil""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ATOM_POTENTIAL_STYLE",
     property_label="Interatomic Potential Style",
 )
 
@@ -652,6 +666,7 @@ AtomShortRngOrd = PropertyTypeDef(
     code="ATOM_SHORT_RNG_ORD",
     description="""Chains, rings, tetrahedra etc.//Ketten, Ringe, Tetraeder usw.""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="SHORT_RNG_ORD",
     property_label="Short-range Ordering",
 )
 
@@ -700,6 +715,7 @@ AtomXcFunctional = PropertyTypeDef(
     code="ATOM_XC_FUNCTIONAL",
     description="""Exchange-correlation functional//Austausch-Korrelations-Funktional""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ATOM_XC_FUNCTIONAL",
     property_label="XC functional",
 )
 
@@ -724,6 +740,7 @@ AuxiliaryMaterialType = PropertyTypeDef(
     code="AUXILIARY_MATERIAL_TYPE",
     description="""Auxiliary Material Type//Hilfsstofftyp""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="AUXILIARY_MATERIAL_TYPE",
     property_label="Auxiliary Material Type",
 )
 
@@ -740,6 +757,7 @@ BamFieldOfActivity = PropertyTypeDef(
     code="BAM_FIELD_OF_ACTIVITY",
     description="""BAM Field of Activity//BAM Aktivitätsfeld""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BAM_FIELD_OF_ACTIVITY",
     property_label="BAM Field of Activity",
 )
 
@@ -748,6 +766,7 @@ BamFloor = PropertyTypeDef(
     code="BAM_FLOOR",
     description="""BAM Floor//BAM Etage""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BAM_FLOOR",
     property_label="BAM Floor",
 )
 
@@ -756,6 +775,7 @@ BamFocusArea = PropertyTypeDef(
     code="BAM_FOCUS_AREA",
     description="""BAM Focus Area//BAM Themenfeld""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BAM_FOCUS_AREA",
     property_label="BAM Focus Area",
 )
 
@@ -764,6 +784,7 @@ BamHouse = PropertyTypeDef(
     code="BAM_HOUSE",
     description="""BAM House//BAM Haus""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BAM_HOUSE",
     property_label="BAM House",
 )
 
@@ -772,6 +793,7 @@ BamLocation = PropertyTypeDef(
     code="BAM_LOCATION",
     description="""BAM Location//BAM Liegenschaft""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BAM_LOCATION",
     property_label="BAM Location",
 )
 
@@ -780,6 +802,7 @@ BamLocationComplete = PropertyTypeDef(
     code="BAM_LOCATION_COMPLETE",
     description="""Complete BAM location (up to room level)//Komplette BAM-Ortsangabe (bis Raumlevel)""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BAM_LOCATION_COMPLETE",
     property_label="Complete BAM Location",
 )
 
@@ -788,6 +811,7 @@ BamOe = PropertyTypeDef(
     code="BAM_OE",
     description="""BAM Organizational Entity//BAM Organisationseinheit (OE)""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BAM_OE",
     property_label="BAM Organizational Entity",
 )
 
@@ -804,6 +828,7 @@ BamRoom = PropertyTypeDef(
     code="BAM_ROOM",
     description="""BAM Room//BAM Raum""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BAM_ROOM",
     property_label="BAM Room",
 )
 
@@ -852,6 +877,7 @@ BravaisLattice = PropertyTypeDef(
     code="BRAVAIS_LATTICE",
     description="""Bravais lattice//Bravais-Gitter""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BRAVAIS_LATTICE",
     property_label="Bravais Lattice",
 )
 
@@ -892,6 +918,7 @@ CalibrationProvider = PropertyTypeDef(
     code="CALIBRATION_PROVIDER",
     description="""Calibration provider//Kalibrierdienstleister""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="CALIBRATION_PROVIDER",
     property_label="Calibration provider",
 )
 
@@ -908,6 +935,7 @@ CameraShutterMode = PropertyTypeDef(
     code="CAMERA_SHUTTER_MODE",
     description="""The shutter mode used for video recording//Belichtungsprinzip des Bildsensors""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="CAMERA_SHUTTER_MODE",
     property_label="Shutter mode",
 )
 
@@ -1044,6 +1072,7 @@ CoResponsiblePerson = PropertyTypeDef(
     code="CO_RESPONSIBLE_PERSON",
     description="""Co-responsible person//Weitere verantwortliche Person""",
     data_type="OBJECT",
+    object_code="PERSON.BAM",
     property_label="Co-responsible person",
 )
 
@@ -1156,6 +1185,7 @@ DcpdPotDropCal = PropertyTypeDef(
     code="DCPD_POT_DROP_CAL",
     description="""Potential Drop Calibration//Kalibrierung des Potentialabfalls""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="DCPD_POT_CAL",
     property_label="Potential Drop Calibration",
 )
 
@@ -1268,6 +1298,7 @@ DfgDeviceCode = PropertyTypeDef(
     code="DFG_DEVICE_CODE",
     description="""DFG Device Code//DFG Gerätegruppenschlüssel (GGS)""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="DFG_DEVICE_CODE",
     property_label="DFG Device Code",
 )
 
@@ -1276,6 +1307,7 @@ DocumentType = PropertyTypeDef(
     code="DOCUMENT_TYPE",
     description="""Document Type//Dokumenten Typ""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="DOCUMENT_TYPE",
     property_label="Document type",
 )
 
@@ -1284,6 +1316,7 @@ Donor = PropertyTypeDef(
     code="DONOR",
     description="""Name of the donor organism of which the genetic information is used for generating a GMO//Name des Spenderorganismus, dessen genetische Information für die Erzeugung eines GVO verwendet wird""",
     data_type="OBJECT",
+    object_code="ORGANISM",
     property_label="Donor Organism",
 )
 
@@ -1292,6 +1325,7 @@ DonorRiskGroup = PropertyTypeDef(
     code="DONOR_RISK_GROUP",
     description="""Organism Risk Group Assignment//Risikogruppenzuordnung des Organismus""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ORGANISM_RISK_GROUP",
     property_label="Donor Organism Risk Group",
 )
 
@@ -1308,6 +1342,7 @@ ElectronicSmearing = PropertyTypeDef(
     code="ELECTRONIC_SMEARING",
     description="""Partial occupancies//Teilbesetzungen""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ELECTRONIC_SMEARING",
     property_label="Partial Occupancies",
 )
 
@@ -1436,6 +1471,7 @@ FcgStepType = PropertyTypeDef(
     code="FCG_STEP_TYPE",
     description="""Step Type//Versuchsschritt-Typ""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="FCG_STEP_TYPE",
     property_label="Step Type",
 )
 
@@ -1588,6 +1624,7 @@ FlashLampShape = PropertyTypeDef(
     code="FLASH_LAMP_SHAPE",
     description="""Lamp shape//Lampenform""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="FLASH_LAMP_SHAPE",
     property_label="Lamp shape",
 )
 
@@ -1676,6 +1713,7 @@ GentechBiosafetyOfficer = PropertyTypeDef(
     code="GENTECH_BIOSAFETY_OFFICER",
     description="""BAM Biosafety Officer according to GenTSV//BAM Beauftragte für biologische Sicherheit nach GenTSV""",
     data_type="OBJECT",
+    object_code="PERSON.BAM",
     property_label="Genetic Engineering Facility Biosafety Officer",
 )
 
@@ -1684,6 +1722,7 @@ GentechFacility = PropertyTypeDef(
     code="GENTECH_FACILITY",
     description="""BAM genetic engineering facility//BAM gentechnische Anlage""",
     data_type="OBJECT",
+    object_code="BAM_GENTECH_FACILITY",
     property_label="BAM genetic engineering installation",
 )
 
@@ -1692,6 +1731,7 @@ GentechProjectLead = PropertyTypeDef(
     code="GENTECH_PROJECT_LEAD",
     description="""BAM Project Leader according to GenTSV//BAM Project Leiter nach GenTSV""",
     data_type="OBJECT",
+    object_code="PERSON.BAM",
     property_label="Genetic Engineering Facility Project Leader",
 )
 
@@ -1700,6 +1740,7 @@ GentechSafetyLevel = PropertyTypeDef(
     code="GENTECH_SAFETY_LEVEL",
     description="""BAM genetic engineering facility//BAM gentechnische Anlage""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="GENTECH_SAFETY_LEVEL",
     property_label="Genetic Engineering Facility Safety Level",
 )
 
@@ -1724,6 +1765,7 @@ GmoDonor = PropertyTypeDef(
     code="GMO_DONOR",
     description="""Donor organism of which the genetic information is used for generating a GMO//Spenderorganismus, dessen genetische Information für die Erzeugung eines GVO verwendet wird""",
     data_type="OBJECT",
+    object_code="SAMPLE.GMO_DONOR",
     property_label="Donor Organism",
 )
 
@@ -1740,6 +1782,7 @@ GmoRecipient = PropertyTypeDef(
     code="GMO_RECIPIENT",
     description="""Recipient organism in which the genetic information is used for generating a GMO//Empfängerorganismus, in dem die genetische Information für die Erzeugung eines GVO verwendet wird""",
     data_type="OBJECT",
+    object_code="SAMPLE.GMO_RECIPIENT",
     property_label="Recipient Organism",
 )
 
@@ -1748,6 +1791,7 @@ GmoRiskGroup = PropertyTypeDef(
     code="GMO_RISK_GROUP",
     description="""Organism Risk Group Assignment of GMO according own Risk Assessment//Risikogruppenzuordnung des GVO anhand eigener Risikobewertung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ORGANISM_RISK_GROUP",
     property_label="GMO Risk Group",
 )
 
@@ -1788,6 +1832,7 @@ HeatingAreaDesc = PropertyTypeDef(
     code="HEATING_AREA_DESC",
     description="""Area of effect of the heating//Effektive Erwärmungsfläche""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="HEATING_AREA_DESC",
     property_label="Area of effect of the heating",
 )
 
@@ -1820,6 +1865,7 @@ HeatingPrinciple = PropertyTypeDef(
     code="HEATING_PRINCIPLE",
     description="""Heating Principle//Prinzip der Erwärmung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="HEATING_PRINCIPLE",
     property_label="Heating Principle",
 )
 
@@ -1852,6 +1898,7 @@ HeatSourceOrientation = PropertyTypeDef(
     code="HEAT_SOURCE_ORIENTATION",
     description="""Orientation of the heat source w.r.t. the camera//Ausrichtung der Wärmequelle zur Kamera""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="THERMOGRAPHIC_SETUP_HS_ORIENT",
     property_label="Orientation of the heat source w.r.t. the camera",
 )
 
@@ -2096,6 +2143,7 @@ InitialSsyRatio = PropertyTypeDef(
 )
 
 
+# ! Missing `object_code`
 Instrument = PropertyTypeDef(
     code="INSTRUMENT",
     description="""Testing machine or measurement device//Prüfmaschine oder Messgerät""",
@@ -2108,6 +2156,7 @@ InstrumentStatus = PropertyTypeDef(
     code="INSTRUMENT_STATUS",
     description="""Instrument status//Instrumentenstatus""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="INSTRUMENT_STATUS",
     property_label="Instrument Status",
 )
 
@@ -2204,6 +2253,7 @@ LaserType = PropertyTypeDef(
     code="LASER_TYPE",
     description="""Type of the laser//Lasertyp""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="LASER_TYPE",
     property_label="Laser Type",
 )
 
@@ -2372,6 +2422,7 @@ LoadFrameOrientation = PropertyTypeDef(
     code="LOAD_FRAME_ORIENTATION",
     description="""Load Frame Orientation//Orientierung des Lastrahmens""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="LOAD_FRAME_ORIENTATION",
     property_label="Load Frame Orientation",
 )
 
@@ -2436,6 +2487,7 @@ MassSpecType = PropertyTypeDef(
     code="MASS_SPEC_TYPE",
     description="""Mass Spectrometer Type//Massenspektrometer-Typ""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="MASS_SPEC_TYPE",
     property_label="MS Type",
 )
 
@@ -2476,6 +2528,7 @@ MatCode = PropertyTypeDef(
     code="MAT_CODE",
     description="""Material Number//Werkstoffnummer""",
     data_type="OBJECT",
+    object_code="RAW_MATERIAL_CODE",
     property_label="Material Number",
 )
 
@@ -2484,6 +2537,7 @@ MatScale = PropertyTypeDef(
     code="MAT_SCALE",
     description="""Material scale//Material Skala""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="MAT_SCALE",
     property_label="Material Scale",
 )
 
@@ -2492,6 +2546,7 @@ MatStructure = PropertyTypeDef(
     code="MAT_STRUCTURE",
     description="""Material Structure//Materialstruktur""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="MAT_STRUCTURE",
     property_label="Material Structure",
 )
 
@@ -2668,6 +2723,7 @@ MicFcgFracsurfCracklengthType = PropertyTypeDef(
     code="MIC_FCG_FRACSURF_CRACKLENGTH_TYPE",
     description="""Type of Cracklength measured on Fracture Surface//Art der auf der Bruchfläche gemessenen Risslänge""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="MICROSCOPY_FCG_CRACKLENGTH_TYPE",
     property_label="Type of Cracklength measured on Fracture Surface",
 )
 
@@ -2756,6 +2812,7 @@ MurnEqnOfState = PropertyTypeDef(
     code="MURN_EQN_OF_STATE",
     description="""Equation of state used for fit//Für das Fitting verwendete Zustandsgleichung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="MURN_EQN_OF_STATE",
     property_label="Equation of State",
 )
 
@@ -2852,6 +2909,7 @@ NucPerformed = PropertyTypeDef(
     code="NUC_PERFORMED",
     description="""NUC-performed//NUC-durchgeführt""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="NUC_PERFORMED",
     property_label="NUC-performed",
 )
 
@@ -2924,6 +2982,7 @@ OperatingSystem = PropertyTypeDef(
     code="OPERATING_SYSTEM",
     description="""Operating System (OS)//Betriebssystem""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="OPERATING_SYSTEM",
     property_label="Operating System",
 )
 
@@ -2940,6 +2999,7 @@ OrganismFootnote = PropertyTypeDef(
     code="ORGANISM_FOOTNOTE",
     description="""Central commission for biological safety Footnotes//Zentral Komission für Biologische Sicherheit ZKBS Fußnote""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ORGANISM_FOOTNOTE_ZKBS",
     property_label="ZKBS Footnote",
 )
 
@@ -2948,6 +3008,7 @@ OrganismGroup = PropertyTypeDef(
     code="ORGANISM_GROUP",
     description="""Organism group assignment according to the central comission of biological safety or category in the BAM-Biomicrosearch//Organismen Gruppenzuordnung anhand ZKBS bzw. die Kategorie in der BAM-Microsearch Datenbank database//Organismen Gruppenzuordnung anhand ZKBS bzw. die Kategorie in der BAM-Microsearch Datenbank""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ORGANISM_GROUP",
     property_label="Organism Group Assignment",
 )
 
@@ -2956,6 +3017,7 @@ OrganismRiskGroup = PropertyTypeDef(
     code="ORGANISM_RISK_GROUP",
     description="""Organism Risk Group Assignment//Risikogruppenzuordnung des Organismus""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ORGANISM_RISK_GROUP",
     property_label="Organism Risk Group Assignement",
 )
 
@@ -3012,6 +3074,7 @@ PersonStatus = PropertyTypeDef(
     code="PERSON_STATUS",
     description="""Person status//Anwesenheitsstatus einer Person""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="PERSON_STATUS",
     property_label="Person status",
 )
 
@@ -3020,6 +3083,7 @@ PhysicalState = PropertyTypeDef(
     code="PHYSICAL_STATE",
     description="""Physical state of a material // Physikalischer Zustand eines Materials""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="PHYSICAL_STATE",
     property_label="Physical State",
 )
 
@@ -3028,6 +3092,7 @@ PlasmidBacterialAntibioticResistance = PropertyTypeDef(
     code="PLASMID_BACTERIAL_ANTIBIOTIC_RESISTANCE",
     description="""Bacterial antibiotic resistance//Bakterielle Antibiotikaresistenz zur Selektion""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="PLASMID_BACTERIAL_ANTIBIOTIC_RESISTANCE",
     property_label="Bacterial Antibiotic Resistance",
 )
 
@@ -3044,6 +3109,7 @@ PlasmidOri = PropertyTypeDef(
     code="PLASMID_ORI",
     description="""Bacterial Origin of Replication (plasmid copy number)//Bakterieller Replikationsursprung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="PLASMID_ORI",
     property_label="Origin of Replication",
 )
 
@@ -3156,6 +3222,7 @@ PositionerType = PropertyTypeDef(
     code="POSITIONER_TYPE",
     description="""Positioner type//Art des Positionierers""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="POSITIONER_TYPE",
     property_label="Positioner type",
 )
 
@@ -3196,6 +3263,7 @@ ProductCategory = PropertyTypeDef(
     code="PRODUCT_CATEGORY",
     description="""Product Category (corresponds to field `Product Category` in the Hazardous Materials Inventory (GSM) of BAM)//Produktkategorie (entspricht Feld `Verwendungstypen/Produktkategorie` aus dem Gefahrstoffmanagement (GSM) der BAM))""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="CHEMICAL_PRODUCT_CATEGORY",
     property_label="Product Category",
 )
 
@@ -3212,6 +3280,7 @@ ProjectLeaderBam = PropertyTypeDef(
     code="PROJECT_LEADER_BAM",
     description="""Project Leader at BAM//Projektleitung an der BAM""",
     data_type="OBJECT",
+    object_code="PERSON.BAM",
     property_label="Project Leader",
 )
 
@@ -3220,6 +3289,7 @@ ProjectStatus = PropertyTypeDef(
     code="PROJECT_STATUS",
     description="""Project Status//Projektstatus""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="PROJECT_STATUS",
     property_label="Project Status",
 )
 
@@ -3236,6 +3306,7 @@ PseudopotFunc = PropertyTypeDef(
     code="PSEUDOPOT_FUNC",
     description="""Functional compatibility//Funktional-Kompatibilität""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="PSEUDOPOT_FUNCTIONAL",
     property_label="Functional Compatibility",
 )
 
@@ -3252,6 +3323,7 @@ PseudopotType = PropertyTypeDef(
     code="PSEUDOPOT_TYPE",
     description="""Type of pseudopotenial//Art des Pseudopotenials""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="PSEUDOPOT_TYPE",
     property_label="Type of Pseudopotenial",
 )
 
@@ -3292,6 +3364,7 @@ QueuingSystem = PropertyTypeDef(
     code="QUEUING_SYSTEM",
     description="""Queuing System used by HPC//Warteschlangensystem des HPCs""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="QUEUING_SYSTEM",
     property_label="Queuing System",
 )
 
@@ -3476,6 +3549,7 @@ RawMatForm = PropertyTypeDef(
     code="RAW_MAT_FORM",
     description="""Raw Material Form//Halbzeugart""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_FORM",
     property_label="Raw Material Form",
 )
 
@@ -3540,6 +3614,7 @@ Recipient = PropertyTypeDef(
     code="RECIPIENT",
     description="""Name of the recipient organism in which the genetic information is used to generate a GMO//Name des Empfängerorganismus, in dem die genetische Information für die Erzeugung eines GVO verwendet wird""",
     data_type="OBJECT",
+    object_code="ORGANISM",
     property_label="Recipient Organism",
 )
 
@@ -3548,6 +3623,7 @@ RecipientRiskGroup = PropertyTypeDef(
     code="RECIPIENT_RISK_GROUP",
     description="""Organism Risk Group Assignment//Risikogruppenzuordnung des Organismus""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ORGANISM_RISK_GROUP",
     property_label="Recipient Organism Risk Group Assignment",
 )
 
@@ -3572,6 +3648,7 @@ ResponsiblePerson = PropertyTypeDef(
     code="RESPONSIBLE_PERSON",
     description="""Responsible person//Verantwortliche Person""",
     data_type="OBJECT",
+    object_code="PERSON.BAM",
     property_label="Responsible person",
 )
 
@@ -3612,6 +3689,7 @@ RobotType = PropertyTypeDef(
     code="ROBOT_TYPE",
     description="""Type of Robot//Roboterart""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="ROBOT_TYPE",
     property_label="Type of Robot",
 )
 
@@ -3636,6 +3714,7 @@ RtdAccuracyClass = PropertyTypeDef(
     code="RTD_ACCURACY_CLASS",
     description="""RTD Accuracy Class//Widerstandsthermometer Genauigkeitsklasse""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RTD_ACCURACY_CLASS",
     property_label="RTD Accuracy Class",
 )
 
@@ -3652,6 +3731,7 @@ RtdConnection = PropertyTypeDef(
     code="RTD_CONNECTION",
     description="""RTD Connection//Widerstandsthermometer Anschlussart""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RTD_CONNECTION_TYPE",
     property_label="RTD Connection",
 )
 
@@ -3676,6 +3756,7 @@ RtdInsulationMaterial = PropertyTypeDef(
     code="RTD_INSULATION_MATERIAL",
     description="""RTD Insulation Material//Widerstandsthermometer Isolationsmaterial""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RTD_INSULATION_MATERIAL",
     property_label="RTD Insulation Material",
 )
 
@@ -3700,6 +3781,7 @@ RtdType = PropertyTypeDef(
     code="RTD_TYPE",
     description="""RTD Type//Widerstandsthermometer Typ""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RTD_TYPE",
     property_label="RTD Type",
 )
 
@@ -3724,6 +3806,7 @@ SampleHolderMaterial = PropertyTypeDef(
     code="SAMPLE_HOLDER_MATERIAL",
     description="""Material of the sample holder//Material des Probenbehälters""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="SAMPLE_HOLDER_MATERIAL",
     property_label="Holder Material",
 )
 
@@ -3828,6 +3911,7 @@ SetupConfiguration = PropertyTypeDef(
     code="SETUP_CONFIGURATION",
     description="""Setup configuration//Messanordnung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="THERMOGRAPHIC_SETUP_CONFIG",
     property_label="Setup configuration",
 )
 
@@ -4044,6 +4128,7 @@ SpaceGroup = PropertyTypeDef(
     code="SPACE_GROUP",
     description="""Space group//Raumgruppe""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="SPACE_GROUP",
     property_label="Space Group",
 )
 
@@ -4052,6 +4137,7 @@ SpectrometerType = PropertyTypeDef(
     code="SPECTROMETER_TYPE",
     description="""Type of spectrometer//Spektrometertyp""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="OPTICAL_SPECTROMETER_TYPE",
     property_label="Spectrometer Type",
 )
 
@@ -4084,6 +4170,7 @@ SpecFcgNotchtype = PropertyTypeDef(
     code="SPEC_FCG_NOTCHTYPE",
     description="""Notch Type//Kerbtyp""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="NOTCH_TYPE_FCG",
     property_label="Notch Type",
 )
 
@@ -4100,6 +4187,7 @@ SpecFcgType = PropertyTypeDef(
     code="SPEC_FCG_TYPE",
     description="""Fatigue Crack Growth Specimen Type//Ermüdungsrisswachstums-Probentyp""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="SPECIMEN_TYPE_FCG_TEST",
     property_label="Fatigue Crack Growth Specimen Type",
 )
 
@@ -4124,6 +4212,7 @@ SpecStatus = PropertyTypeDef(
     code="SPEC_STATUS",
     description="""Specimen Status//Probenstatus""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="SPECIMEN_STATUS",
     property_label="Specimen Status",
 )
 
@@ -4148,6 +4237,7 @@ SteelTreatmentFirst = PropertyTypeDef(
     code="STEEL_TREATMENT_FIRST",
     description="""First Treatment//Erste Behandlung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_TREATMENT_STEEL",
     property_label="First Treatment",
 )
 
@@ -4156,6 +4246,7 @@ SteelTreatmentFourth = PropertyTypeDef(
     code="STEEL_TREATMENT_FOURTH",
     description="""Fourth Treatment//Vierte Behandlung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_TREATMENT_STEEL",
     property_label="Fourth Treatment",
 )
 
@@ -4164,6 +4255,7 @@ SteelTreatmentSecond = PropertyTypeDef(
     code="STEEL_TREATMENT_SECOND",
     description="""Second Treatment//Zweite Behandlung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_TREATMENT_STEEL",
     property_label="Second Treatment",
 )
 
@@ -4172,6 +4264,7 @@ SteelTreatmentThird = PropertyTypeDef(
     code="STEEL_TREATMENT_THIRD",
     description="""Third Treatment//Dritte Behandlung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="RAW_MAT_TREATMENT_STEEL",
     property_label="Third Treatment",
 )
 
@@ -4188,6 +4281,7 @@ Subframe = PropertyTypeDef(
     code="SUBFRAME",
     description="""Subframe setting//Einstellung Subframe""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="SUBFRAME_TYPE",
     property_label="Subframe type",
 )
 
@@ -4268,6 +4362,7 @@ TcType = PropertyTypeDef(
     code="TC_TYPE",
     description="""Thermocouple Type//Thermoelement Typ""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="THERMOCOUPLE_TYPE",
     property_label="Thermocouple Type",
 )
 
@@ -4284,6 +4379,7 @@ TechnikumMaterialUsage = PropertyTypeDef(
     code="TECHNIKUM_MATERIAL_USAGE",
     description="""Potential material usage//Möglicher Verwendungszweck des Materials""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="MATERIAL_USAGE_TECHNIKUM",
     property_label="Material usage",
 )
 
@@ -4308,6 +4404,7 @@ TemporalHeatingStructure = PropertyTypeDef(
     code="TEMPORAL_HEATING_STRUCTURE",
     description="""Temporal Structure of the heating//Zeitliche Struktur der Erwärmung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="TEMPORAL_HEATING_STRUCTURE",
     property_label="Temporal Structure of the heating",
 )
 
@@ -4332,6 +4429,7 @@ TestingMachineDriveType = PropertyTypeDef(
     code="TESTING_MACHINE_DRIVE_TYPE",
     description="""Drive Type//Antriebsart""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="TESTING_MACHINE_DRIVE_TYPE",
     property_label="Drive Type",
 )
 
@@ -4340,6 +4438,7 @@ TestingMachineLoadType = PropertyTypeDef(
     code="TESTING_MACHINE_LOAD_TYPE",
     description="""Load type//Belastungsart""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="TESTING_MACHINE_LOAD_TYPE",
     property_label="Load Type",
 )
 
@@ -4364,6 +4463,7 @@ TestObjMaterial = PropertyTypeDef(
     code="TEST_OBJ_MATERIAL",
     description="""Building Material//Werkstoff""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="BUILDING_MATERIAL_TYPE",
     property_label="Building Material",
 )
 
@@ -4372,6 +4472,7 @@ TestObjStatus = PropertyTypeDef(
     code="TEST_OBJ_STATUS",
     description="""Test Object Status//Prüfkörperstatus""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="TEST_OBJECT_STATUS",
     property_label="Test Object Status",
 )
 
@@ -4388,6 +4489,7 @@ TestSetupType = PropertyTypeDef(
     code="TEST_SETUP_TYPE",
     description="""Test Setup Type//Test Setup Typ""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="TEST_SETUP_TYPE",
     property_label="Test Setup Type",
 )
 
@@ -4396,6 +4498,7 @@ TestType = PropertyTypeDef(
     code="TEST_TYPE",
     description="""Test Type//Art des Versuchs""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="TEST_PROGRAM_TYPE",
     property_label="Test Type",
 )
 
@@ -4412,6 +4515,7 @@ TrainedPerson = PropertyTypeDef(
     code="TRAINED_PERSON",
     description="""Trained Person//Eingewiesene Person""",
     data_type="OBJECT",
+    object_code="PERSON.BAM",
     property_label="Trained Person",
 )
 
@@ -4420,6 +4524,7 @@ UnitMass = PropertyTypeDef(
     code="UNIT_MASS",
     description="""Mass unit//Masseeinheit""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="UNIT_MASS",
     property_label="Mass unit//Masseeinheit",
 )
 
@@ -4476,6 +4581,7 @@ Vector = PropertyTypeDef(
     code="VECTOR",
     description="""A plasmid used as a biological carrier to introduce nucleic acid segments into a new cell//Ein Plasmid, das als biologischer Träger verwendet wird, um Nukleinsäuresegmente in eine neue Zelle einzubringen""",
     data_type="OBJECT",
+    object_code="SAMPLE.PLASMID",
     property_label="Vector name",
 )
 
@@ -4580,6 +4686,7 @@ WeatherCondition = PropertyTypeDef(
     code="WEATHER_CONDITION",
     description="""Weather//Wetter""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="WEATHER_CONDITION",
     property_label="Weather",
 )
 
@@ -4604,6 +4711,7 @@ WindDirection = PropertyTypeDef(
     code="WIND_DIRECTION",
     description="""Wind direction//Windrichtung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="WIND_DIRECTION",
     property_label="Wind direction",
 )
 
@@ -4684,6 +4792,7 @@ OrderStatus = PropertyTypeDef(
     code="$ORDERING.ORDER_STATUS",
     description="""Order Status""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="$ORDER.ORDER_STATUS",
     property_label="Order Status",
 )
 
@@ -4700,6 +4809,7 @@ Currency = PropertyTypeDef(
     code="$PRODUCT.CURRENCY",
     description="""Currency""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="$PRODUCT.CURRENCY",
     property_label="Currency",
 )
 
@@ -4828,6 +4938,7 @@ StorageValidationLevel = PropertyTypeDef(
     code="$STORAGE.STORAGE_VALIDATION_LEVEL",
     description="""Validation level""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="$STORAGE.STORAGE_VALIDATION_LEVEL",
     property_label="Validation level",
 )
 
@@ -4852,6 +4963,7 @@ StorageBoxSize = PropertyTypeDef(
     code="$STORAGE_POSITION.STORAGE_BOX_SIZE",
     description="""Box Size""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="$STORAGE_POSITION.STORAGE_BOX_SIZE",
     property_label="Storage Box Size",
 )
 
@@ -4924,6 +5036,7 @@ CompanyLanguage = PropertyTypeDef(
     code="$SUPPLIER.COMPANY_LANGUAGE",
     description="""Company language""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="$SUPPLIER.LANGUAGE",
     property_label="Company language",
 )
 
@@ -4948,6 +5061,7 @@ ColorEncodedAnnotation = PropertyTypeDef(
     code="$WELL.COLOR_ENCODED_ANNOTATION",
     description="""Color Annotation for plate wells""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="$WELL.COLOR_ENCODED_ANNOTATIONS",
     property_label="Color Annotation",
 )
 
@@ -5516,6 +5630,7 @@ WeldmentType = PropertyTypeDef(
     code="EXPERIMENTAL_STEP.WELDMENT_TYPE",
     description="""Type of weldment made//Art der Schweißverbindung""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="WELDING.WELD_TYPE",
     property_label="Type of weld",
 )
 
@@ -5524,6 +5639,7 @@ Accessory = PropertyTypeDef(
     code="FTIR.ACCESSORY",
     description="""FTIR Accessory//FTIR Zubehör""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="FTIR_ACCESSORIES",
     property_label="Accessory",
 )
 
@@ -5620,6 +5736,7 @@ TriggerSetting = PropertyTypeDef(
     code="IR_CAMERA.TRIGGER_SETTING",
     description="""Trigger setting//Einstellung Kameratrigger""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="IR_CAMERA.TRIGGER_SETTING",
     property_label="Trigger setting",
 )
 
@@ -5676,6 +5793,7 @@ Experiment = PropertyTypeDef(
     code="NMR.EXPERIMENT",
     description="""NMR Experiment//NMR Experiment""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="NMR_EXPERIMENT_TYPES",
     property_label="Experiment",
 )
 
@@ -5716,6 +5834,7 @@ NucleusDirect = PropertyTypeDef(
     code="NMR.NUCLEUS_DIRECT",
     description="""Nucleus (direct)//Kern (direct)""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="NMR_NUCLEI",
     property_label="Nucleus (direct)",
 )
 
@@ -5724,6 +5843,7 @@ NucleusIndirect = PropertyTypeDef(
     code="NMR.NUCLEUS_INDIRECT",
     description="""Nucleus (indirect, 2D only)//Kern (indirekt, nur 2D)""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="NMR_NUCLEI",
     property_label="Nucleus (indirect, 2D only)",
 )
 
@@ -5748,6 +5868,7 @@ Solvent = PropertyTypeDef(
     code="NMR.SOLVENT",
     description="""NMR Solvent//NMR Lösungsmittel""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="NMR_SOLVENTS",
     property_label="Solvent",
 )
 
@@ -5964,6 +6085,7 @@ PreferredOrderMethod = PropertyTypeDef(
     code="SUPPLIER.PREFERRED_ORDER_METHOD",
     description="""Preferred order method""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="$SUPPLIER.PREFERRED_ORDER_METHOD",
     property_label="Preferred order method",
 )
 
@@ -6148,6 +6270,7 @@ TorchType = PropertyTypeDef(
     code="WELDING.TORCH_TYPE",
     description="""type of welding torch//Art des Schweißbrenners""",
     data_type="CONTROLLEDVOCABULARY",
+    vocabulary_code="WELDING.GMAW_TORCH_TYPE",
     property_label="Type",
 )
 
