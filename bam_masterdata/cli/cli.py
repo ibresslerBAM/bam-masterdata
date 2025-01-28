@@ -38,20 +38,46 @@ def cli():
     it is using the value of the `OPENBIS_URL` environment variable.
     """,
 )
-def fill_masterdata(url):
+@click.option(
+    "--excel-file",
+    type=click.Path(exists=True, dir_okay=False),
+    required=False,
+    help="""
+    (Optional) The path to the Masterdata Excel file.
+    """,
+)
+def fill_masterdata(url, excel_file):
     start_time = time.time()
+
+    # Define output directory
+    output_directory = (
+        os.path.join(DATAMODEL_DIR, "tmp") if excel_file else DATAMODEL_DIR
+    )
+
+    # Ensure the output directory exists
+    os.makedirs(output_directory, exist_ok=True)
+
+    # Check for mutual exclusivity
+    if excel_file and url:
+        raise click.UsageError(
+            "You cannot specify both --url and --excel-file. Please choose one."
+        )
 
     # ! this takes a lot of time loading all the entities in Openbis
     # Use the URL if provided, otherwise fall back to defaults
-    if not url:
-        url = environ("OPENBIS_URL")
-    click.echo(f"Using the openBIS instance: {url}\n")
-    generator = MasterdataCodeGenerator(url=url)
+    if excel_file:
+        click.echo(f"Using the Masterdata Excel file path: {excel_file}\n")
+        generator = MasterdataCodeGenerator(path=excel_file)
+    else:
+        if not url:
+            url = environ("OPENBIS_URL")
+        click.echo(f"Using the openBIS instance: {url}\n")
+        generator = MasterdataCodeGenerator(url=url)
 
     # Add each module to the `bam_masterdata/datamodel` directory
     for module_name in ["property", "collection", "dataset", "object", "vocabulary"]:
         module_start_time = time.perf_counter()  # more precise time measurement
-        output_file = Path(os.path.join(DATAMODEL_DIR, f"{module_name}_types.py"))
+        output_file = Path(os.path.join(output_directory, f"{module_name}_types.py"))
 
         # Get the method from `MasterdataCodeGenerator`
         code = getattr(generator, f"generate_{module_name}_types")()
