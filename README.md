@@ -1,15 +1,15 @@
 <h1 align="center">
   <picture>
-    <source srcset="https://github.com/BAMresearch/bam-masterdata/docs/assets/bammasterdata_blue_white_text.png">
+    <source srcset="https://github.com/BAMresearch/bam-masterdata/raw/main/docs/assets/bammasterdata_blue_transparent_text.svg">
     <img alt="BAM Masterdata" text="BAM Masterdata">
   </picture>
 </h1>
 
 <h4 align="center">
-  ![test-and-build pipeline](https://github.com/BAMresearch/bam-masterdata/actions/workflows/actions.yml/badge.svg)
-</h4>
 
-# BAM Masterdata
+[![CI Status](https://github.com/BAMresearch/bam-masterdata/actions/workflows/actions.yml/badge.svg)](https://github.com/BAMresearch/bam-masterdata/actions/workflows/actions.yml/badge.svg)
+
+</h4>
 
 The BAM Masterdata is a repository containing all the masterdata schema defining in BAM, as well as some utility functions to handle the masterdata.
 
