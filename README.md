@@ -1,9 +1,12 @@
 <h1 align="center">
   <picture>
     <source srcset="https://github.com/BAMresearch/bam-masterdata/raw/main/docs/assets/bammasterdata_blue_transparent_text.png">
-    <img alt="BAM Masterdata" text="BAM Masterdata">
+    <img src="https://github.com/BAMresearch/bam-masterdata/raw/main/docs/assets/bammasterdata_blue_transparent_text.png"
+         alt="BAM Masterdata"
+         style="width: 25rem">
   </picture>
 </h1>
+
 
 <h4 align="center">
 
