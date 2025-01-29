@@ -1,6 +1,6 @@
 <h1 align="center">
   <picture>
-    <source srcset="https://github.com/BAMresearch/bam-masterdata/raw/main/docs/assets/bammasterdata_blue_transparent_text.svg">
+    <source srcset="https://github.com/BAMresearch/bam-masterdata/raw/main/docs/assets/bammasterdata_blue_transparent_text.png">
     <img alt="BAM Masterdata" text="BAM Masterdata">
   </picture>
 </h1>
