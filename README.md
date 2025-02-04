@@ -12,6 +12,8 @@
 
 [![CI Status](https://github.com/BAMresearch/bam-masterdata/actions/workflows/actions.yml/badge.svg)](https://github.com/BAMresearch/bam-masterdata/actions/workflows/actions.yml/badge.svg)
 [![Coverage](https://coveralls.io/repos/github/BAMresearch/bam-masterdata/badge.svg?branch=main)](https://coveralls.io/repos/github/BAMresearch/bam-masterdata/badge.svg?branch=main)
+[![PyPI versions](https://img.shields.io/pypi/v/bam-masterdata)](https://img.shields.io/pypi/v/bam-masterdata)
+[![Python supported versions](https://img.shields.io/pypi/pyversions/bam-masterdata)](https://img.shields.io/pypi/pyversions/bam-masterdata)
 
 </h4>
 
