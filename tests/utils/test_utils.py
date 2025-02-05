@@ -1,6 +1,8 @@
 import inspect
+import json
 import os
 import shutil
+from pathlib import Path
 
 import pytest
 
@@ -10,6 +12,7 @@ from bam_masterdata.utils import (
     delete_and_create_dir,
     import_module,
     listdir_py_modules,
+    load_validation_rules,
 )
 
 
@@ -84,7 +87,11 @@ def test_listdir_py_modules(
         assert cleared_log_storage[0]["event"] == log_message
         assert cleared_log_storage[0]["level"] == log_message_level
     # when testing locally and with Github actions the order of the files is different --> `result` is sorted, so we also sort `listdir`
-    assert result == sorted(listdir)
+    # Normalize paths to avoid Windows/Linux differences
+    result_normalized = [str(Path(p).resolve()) for p in result]
+    expected_normalized = [str(Path(p).resolve()) for p in sorted(listdir)]
+
+    assert result_normalized == expected_normalized
 
 
 @pytest.mark.skip(
@@ -150,3 +157,113 @@ def test_import_module():
 )
 def test_code_to_class_name(code: str, entity_type: str, result: str):
     assert code_to_class_name(code, entity_type) == result
+
+
+@pytest.mark.parametrize(
+    "file_path, file_content, expected_output, expected_log, expected_exception",
+    [
+        # Valid JSON file with real validation rules
+        (
+            "tests/data/valid_rules.json",
+            json.dumps(
+                VALID_RULES := {
+                    "SAMPLE_TYPE": {
+                        "Code": {"key": "code", "pattern": "^\\$?[A-Za-z0-9_.]+$"},
+                        "Description": {
+                            "key": "description",
+                            "pattern": ".*",
+                            "is_description": True,
+                        },
+                        "Validation script": {
+                            "key": "validationPlugin",
+                            "pattern": "^[A-Za-z0-9_]+\\.py$",
+                            "allow_empty": True,
+                        },
+                    },
+                    "OBJECT_TYPE": {
+                        "Code": {"key": "code", "pattern": "^\\$?[A-Za-z0-9_.]+$"},
+                        "Description": {
+                            "key": "description",
+                            "pattern": ".*",
+                            "is_description": True,
+                        },
+                    },
+                }
+            ),  # JSON content as a string
+            VALID_RULES,  # Expected output as a dictionary
+            "Validation rules successfully loaded.",
+            None,  # No exception
+        ),
+        # File path is None (should fallback to default path)
+        (
+            None,
+            json.dumps(
+                PROPERTY_RULES := {
+                    "PROPERTY_TYPE": {
+                        "Code": {"key": "code", "pattern": "^\\$?[A-Za-z0-9_.]+$"},
+                        "Property label": {"key": "label", "pattern": ".*"},
+                        "Data type": {
+                            "key": "dataType",
+                            "pattern": None,
+                            "is_data": True,
+                        },
+                    }
+                }
+            ),
+            PROPERTY_RULES,
+            "Validation rules successfully loaded.",
+            None,
+        ),
+        # File does not exist
+        (
+            "tests/data/missing.json",
+            None,  # File does not exist
+            None,
+            "Validation rules file not found: tests/data/missing.json",
+            FileNotFoundError,
+        ),
+        # Invalid JSON format (truncated JSON)
+        (
+            "tests/data/invalid.json",
+            '{"SAMPLE_TYPE": {"Code": {"key": "code", "pattern": "^\\$?[A-Za-z0-9_.]+$"}',  # Incomplete JSON
+            None,
+            "Error parsing validation rules JSON:",
+            ValueError,
+        ),
+        # File contains unexpected structure (empty dictionary)
+        (
+            "tests/data/empty.json",
+            "{}",
+            {},
+            "Validation rules successfully loaded.",
+            None,
+        ),
+    ],
+)
+def test_load_validation_rules(
+    tmp_path,
+    cleared_log_storage,
+    file_path,
+    file_content,
+    expected_output,
+    expected_log,
+    expected_exception,
+):
+    """Tests the `load_validation_rules` function with realistic validation rules."""
+
+    # If the file_content is provided, create a temporary JSON file
+    if file_content:
+        test_file = tmp_path / "test_rules.json"
+        test_file.write_text(file_content, encoding="utf-8")
+        file_path = str(test_file)
+
+    # Run the function and check results
+    if expected_exception:
+        with pytest.raises(expected_exception):
+            load_validation_rules(logger, file_path)
+        assert expected_log in cleared_log_storage[0]["event"]
+    else:
+        result = load_validation_rules(logger, file_path)
+        assert result == expected_output
+        assert cleared_log_storage[-1]["event"] == expected_log
+        assert cleared_log_storage[-1]["level"] == "info"
