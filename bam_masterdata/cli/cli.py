@@ -151,11 +151,20 @@ def fill_masterdata(url, excel_file):
     Default is `./bam_masterdata/datamodel/`.
     """,
 )
-def export_to_json(force_delete, python_path):
-    # Get the directories from the Python modules and the export directory for the static artifacts
-    export_dir = os.path.join(".", "artifacts")
-
+@click.option(
+    "--export-dir",
+    type=str,
+    required=False,
+    default="./artifacts",
+    help="The directory where the JSON files will be exported. Default is `./artifacts`.",
+)
+def export_to_json(force_delete, python_path, export_dir):
     # Delete and create the export directory
+    if force_delete:
+        click.confirm(
+            f"Are you sure you want to delete the directory {export_dir}?",
+            abort=True,
+        )
     delete_and_create_dir(
         directory_path=export_dir,
         logger=logger,
@@ -201,11 +210,20 @@ def export_to_json(force_delete, python_path):
     Default is `./bam_masterdata/datamodel/`.
     """,
 )
-def export_to_excel(force_delete, python_path):
-    # Get the directories from the Python modules and the export directory for the static artifacts
-    export_dir = os.path.join(".", "artifacts")
-
+@click.option(
+    "--export-dir",
+    type=str,
+    required=False,
+    default="./artifacts",
+    help="The directory where the Excel file will be exported. Default is `./artifacts`.",
+)
+def export_to_excel(force_delete, python_path, export_dir):
     # Delete and create the export directory
+    if force_delete:
+        click.confirm(
+            f"Are you sure you want to delete the directory {export_dir}?",
+            abort=True,
+        )
     delete_and_create_dir(
         directory_path=export_dir,
         logger=logger,
@@ -272,11 +290,20 @@ def export_to_excel(force_delete, python_path):
     Default is `./bam_masterdata/datamodel/`.
     """,
 )
-def export_to_rdf(force_delete, python_path):
-    # Get the directories from the Python modules and the export directory for the static artifacts
-    export_dir = os.path.join(".", "artifacts")
-
+@click.option(
+    "--export-dir",
+    type=str,
+    required=False,
+    default="./artifacts",
+    help="The directory where the RDF/XML file will be exported. Default is `./artifacts`.",
+)
+def export_to_rdf(force_delete, python_path, export_dir):
     # Delete and create the export directory
+    if force_delete:
+        click.confirm(
+            f"Are you sure you want to delete the directory {export_dir}?",
+            abort=True,
+        )
     delete_and_create_dir(
         directory_path=export_dir,
         logger=logger,
