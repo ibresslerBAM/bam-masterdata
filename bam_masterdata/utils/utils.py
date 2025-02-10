@@ -1,24 +1,30 @@
 import glob
 import importlib.util
+import inspect
 import json
 import os
+import re
 import shutil
 from itertools import chain
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Optional
+
+from bam_masterdata.logger import logger
 
 if TYPE_CHECKING:
     from structlog._config import BoundLoggerLazyProxy
 
 
 def delete_and_create_dir(
-    directory_path: str, logger: "BoundLoggerLazyProxy", force_delete: bool = False
+    directory_path: str,
+    logger: "BoundLoggerLazyProxy" = logger,
+    force_delete: bool = False,
 ) -> None:
     """
     Deletes the directory at `directory_path` and creates a new one in the same path.
 
     Args:
         directory_path (str): The directory path to delete and create the folder.
-        logger (BoundLoggerLazyProxy): The logger to log messages..
+        logger (BoundLoggerLazyProxy): The logger to log messages. Default is `logger`.
         force_delete (bool): If True, the directory will be forcibly deleted if it exists.
     """
     if not directory_path:
@@ -45,7 +51,7 @@ def delete_and_create_dir(
 
 
 def listdir_py_modules(
-    directory_path: str, logger: "BoundLoggerLazyProxy"
+    directory_path: str, logger: "BoundLoggerLazyProxy" = logger
 ) -> list[str]:
     """
     Recursively goes through the `directory_path` and returns a list of all .py files that do not start with '_'. If
@@ -53,7 +59,7 @@ def listdir_py_modules(
 
     Args:
         directory_path (str): The directory path to search through.
-        logger (BoundLoggerLazyProxy): The logger to log messages.
+        logger (BoundLoggerLazyProxy): The logger to log messages. Default is `logger`.
 
     Returns:
         list[str]: A list of all .py files that do not start with '_'
@@ -96,7 +102,11 @@ def import_module(module_path: str) -> Any:
     return module
 
 
-def code_to_class_name(code: str, entity_type: str = "object") -> str:
+def code_to_class_name(
+    code: Optional[str],
+    logger: "BoundLoggerLazyProxy" = logger,
+    entity_type: str = "object",
+) -> str:
     """
     Converts an openBIS `code` to a class name by capitalizing each word and removing special characters. In
     the special case the entity is a property type, it retains the full name separated by points instead of
@@ -104,10 +114,17 @@ def code_to_class_name(code: str, entity_type: str = "object") -> str:
 
     Args:
         code (str): The openBIS code to convert to a class name.
+        logger (BoundLoggerLazyProxy): The logger to log messages. Default is `logger`.
         entity_type (str): The type of entity to convert. Default is "object".
     Returns:
         str: The class name derived from the openBIS code.
     """
+    if not code:
+        logger.error(
+            "The `code` is empty. Please, provide a proper input to the function."
+        )
+        return ""
+
     if entity_type == "property":
         code_names = chain.from_iterable(
             [c.split("_") for c in code.lstrip("$").split(".")]
@@ -145,3 +162,44 @@ def load_validation_rules(
     except json.JSONDecodeError as e:
         logger.error(f"Error parsing validation rules JSON: {e}")
         raise ValueError(f"Error parsing validation rules JSON: {e}")
+
+
+from pathlib import Path
+
+
+def duplicated_property_types(module_path: str, logger: "BoundLoggerLazyProxy") -> dict:
+    """
+    Find the duplicated property types in a module specified by `module_path` and returns a dictionary
+    containing the duplicated property types class names as keys and the lines where they matched as values.
+
+    Args:
+        module_path (str): The path to the module containing the property types.
+        logger (BoundLoggerLazyProxy): The logger to log messages.
+
+    Returns:
+        dict: A dictionary containing the duplicated property types class names as keys and the
+        lines where they matched as values.
+    """
+    duplicated_props: dict = {}
+    module = import_module(module_path=module_path)
+    source_code = inspect.getsource(module)
+    for name, _ in inspect.getmembers(module):
+        if name.startswith("_") or name == "PropertyTypeDef":
+            continue
+
+        pattern = rf"^\s*{name} *= *PropertyTypeDef"
+
+        # Find all matching line numbers
+        matches = [
+            i + 1  # Convert to 1-based index
+            for i, line in enumerate(source_code.splitlines())
+            if re.match(pattern, line)
+        ]
+        if len(matches) > 1:
+            duplicated_props[name] = matches
+    if duplicated_props:
+        logger.critical(
+            f"Found {len(duplicated_props)} duplicated property types. These are stored in a dictionary "
+            f"where the keys are the names of the variables in property_types.py and the values are the lines in the module: {duplicated_props}"
+        )
+    return duplicated_props
