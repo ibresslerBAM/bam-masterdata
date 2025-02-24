@@ -74,7 +74,17 @@ def cli():
     required=False,
     help="The directory where the Masterdata will be exported to.",
 )
-def fill_masterdata(url, excel_file, export_dir):
+@click.option(
+    "--row-cell-info",
+    type=bool,
+    required=False,
+    default=False,
+    help="""
+    (Optional) If when exporting the masterdata from the Excel file, the information of which row in the Excel
+    each field is defined should be stored (useful for the `checker` CLI).
+    """,
+)
+def fill_masterdata(url, excel_file, export_dir, row_cell_info):
     start_time = time.time()
 
     # Define output directory
@@ -98,7 +108,11 @@ def fill_masterdata(url, excel_file, export_dir):
     # Use the URL if provided, otherwise fall back to defaults
     if excel_file:
         click.echo(f"Using the Masterdata Excel file path: {excel_file}\n")
-        generator = MasterdataCodeGenerator(path=excel_file)
+        if row_cell_info:
+            click.echo("Cell information will be stored in the Python fields.")
+        generator = MasterdataCodeGenerator(
+            path=excel_file, row_cell_info=row_cell_info
+        )
     else:
         if not url:
             url = environ("OPENBIS_URL")
@@ -355,7 +369,7 @@ def export_to_rdf(force_delete, python_path, export_dir):
 @click.option(
     "--from",
     "from_path",  # alias
-    type=click.Path(exists=True, dir_okay=False),
+    type=click.Path(exists=True, dir_okay=True),
     default="./artifacts/masterdata.xlsx",
     help="""
     The path to the directory containing the Python modules or the individual masterdata Excel file to be checked.
@@ -364,7 +378,7 @@ def export_to_rdf(force_delete, python_path, export_dir):
 @click.option(
     "--to",
     "to_path",  # alias
-    type=click.Path(exists=True, dir_okay=False),
+    type=click.Path(exists=True, dir_okay=True),
     default=DATAMODEL_DIR,
     help="""
     The path to the directory containing the Python modules the the path defined in `from` will be checked with respect to.
