@@ -142,7 +142,7 @@ def code_to_class_name(
 
 def load_validation_rules(
     logger: "BoundLoggerLazyProxy",
-    file_path: str = "./bam_masterdata/validation_rules/excel_validation_rules.json",
+    file_path: str = "./bam_masterdata/checker/validation_rules/validation_rules.json",
 ):
     if not os.path.exists(file_path):
         logger.error(f"Validation rules file not found: {file_path}")
@@ -159,9 +159,6 @@ def load_validation_rules(
     except json.JSONDecodeError as e:
         logger.error(f"Error parsing validation rules JSON: {e}")
         raise ValueError(f"Error parsing validation rules JSON: {e}")
-
-
-from pathlib import Path
 
 
 def duplicated_property_types(module_path: str, logger: "BoundLoggerLazyProxy") -> dict:
@@ -220,3 +217,48 @@ def convert_enums(obj):
     elif isinstance(obj, Enum):  # Convert Enum to string
         return obj.value
     return obj
+
+
+def is_reduced_version(generated_code_value: str, code: str) -> bool:
+    """
+    Check if generated_code_value is a reduced version of code.
+
+    Args:
+        generated_code_value (str): The potentially reduced code.
+        code (str): The original full code.
+
+    Returns:
+        bool: True if generated_code_value is a reduced version of code, False otherwise.
+    """
+    if generated_code_value == "" or code == "":
+        return False
+
+    if code.startswith(generated_code_value):
+        return True
+
+    # Check if both are single words (no delimiters)
+    if not any(delimiter in code for delimiter in "._") and not any(
+        delimiter in generated_code_value for delimiter in "._"
+    ):
+        return True
+
+    # Determine the delimiter in each string
+    code_delimiter = "." if "." in code else "_" if "_" in code else None
+    generated_delimiter = (
+        "."
+        if "." in generated_code_value
+        else "_"
+        if "_" in generated_code_value
+        else None
+    )
+
+    # If delimiters don't match, return False
+    if code_delimiter != generated_delimiter:
+        return False
+
+    # Split both strings using the determined delimiter
+    generated_parts = generated_code_value.split(code_delimiter)
+    original_parts = code.split(code_delimiter)
+
+    # Ensure both have the same number of parts
+    return len(generated_parts) == len(original_parts)
