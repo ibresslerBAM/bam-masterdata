@@ -24,7 +24,7 @@ class TestEntitiesDict:
                         "row_location": 34,
                         "property_label": "Default collection view",
                         "data_type": "CONTROLLEDVOCABULARY",
-                        "vocabulary_code": null,
+                        "vocabulary_code": "$DEFAULT_COLLECTION_VIEWS",
                         "object_code": null,
                         "metadata": null,
                         "dynamic_script": null,
@@ -93,11 +93,11 @@ class TestEntitiesDict:
                         "description": "Acting Person//Handelnde Person",
                         "iri": null,
                         "id": "ActingPerson",
-                        "row_location": 4140,
+                        "row_location": 4238,
                         "property_label": "Acting Person",
                         "data_type": "OBJECT",
                         "vocabulary_code": null,
-                        "object_code": null,
+                        "object_code": "PERSON.BAM",
                         "metadata": null,
                         "dynamic_script": null,
                         "mandatory": false,
@@ -111,7 +111,7 @@ class TestEntitiesDict:
                         "description": "Action Date//Datum der Handlung",
                         "iri": null,
                         "id": "ActionDate",
-                        "row_location": 4130,
+                        "row_location": 4228,
                         "property_label": "Monitoring Date",
                         "data_type": "DATE",
                         "vocabulary_code": null,
@@ -129,7 +129,7 @@ class TestEntitiesDict:
                         "description": "Annotations State",
                         "iri": null,
                         "id": "AnnotationsState",
-                        "row_location": 4160,
+                        "row_location": 4259,
                         "property_label": "Annotations State",
                         "data_type": "XML",
                         "vocabulary_code": null,
@@ -147,7 +147,7 @@ class TestEntitiesDict:
                         "description": "Name",
                         "iri": null,
                         "id": "Name",
-                        "row_location": 4120,
+                        "row_location": 4218,
                         "property_label": "Name",
                         "data_type": "VARCHAR",
                         "vocabulary_code": null,
@@ -165,7 +165,7 @@ class TestEntitiesDict:
                         "description": "Comments log",
                         "iri": null,
                         "id": "Xmlcomments",
-                        "row_location": 4150,
+                        "row_location": 4249,
                         "property_label": "Comments",
                         "data_type": "XML",
                         "vocabulary_code": null,
@@ -184,29 +184,11 @@ class TestEntitiesDict:
                         "description": "This Object allows to store information on an action by a user.//Dieses Objekt erlaubt eine Nutzer-Aktion zu beschreiben.",
                         "iri": null,
                         "id": "Action",
-                        "row_location": 4113,
+                        "row_location": 4211,
                         "validation_script": null,
                         "generated_code_prefix": "ACT",
                         "auto_generated_codes": true
                     }
-                }""",
-            ),
-            (
-                "property_types",
-                "$NAME",
-                ["code", "description", "property_label", "data_type"],
-                """{
-                    "code": "$NAME",
-                    "description": "Name",
-                    "iri": null,
-                    "id": "Name",
-                    "row_location": 60,
-                    "property_label": "Name",
-                    "data_type": "VARCHAR",
-                    "vocabulary_code": null,
-                    "object_code": null,
-                    "metadata": null,
-                    "dynamic_script": null
                 }""",
             ),
             (
@@ -268,11 +250,10 @@ class TestEntitiesDict:
     def test_single_json(self):
         """Test the `single_json` function."""
         data = EntitiesDict(python_path="./bam_masterdata/datamodel").single_json()
-        assert len(data) == 5
+        assert len(data) == 4
         assert list(data.keys()) == [
             "collection_types",
             "dataset_types",
             "object_types",
-            "property_types",
             "vocabulary_types",
         ]

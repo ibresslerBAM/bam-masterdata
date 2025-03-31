@@ -7,7 +7,8 @@ from rdflib import BNode, Literal
 from rdflib.namespace import DC, OWL, RDF, RDFS
 
 if TYPE_CHECKING:
-    from rdflib import Graph, Namespace
+    from rdflib import Graph, Namespace, URIRef
+    from structlog._config import BoundLoggerLazyProxy
 
 from bam_masterdata.metadata.definitions import (
     CollectionTypeDef,
@@ -17,6 +18,7 @@ from bam_masterdata.metadata.definitions import (
     VocabularyTerm,
     VocabularyTypeDef,
 )
+from bam_masterdata.utils import code_to_class_name
 
 
 class BaseEntity(BaseModel):
@@ -210,6 +212,66 @@ class BaseEntity(BaseModel):
         data = self.model_to_dict()
         return json.dumps(data, indent=indent)
 
+    def _add_properties_rdf(
+        self,
+        namespace: "Namespace",
+        graph: "Graph",
+        prop: "PropertyTypeAssignment",
+        logger: "BoundLoggerLazyProxy",
+    ) -> "URIRef":
+        """
+        Add the properties assigned to the entity to the RDF graph extracting the information from
+        OpenBIS for the `object_code` or `vocabulary_code`.
+
+        Args:
+            namespace (Namespace): The namespace to use for the RDF graph.
+            graph (Graph): The RDF graph to which the properties are added.
+            prop (PropertyTypeAssignment): The property assigned to the entity.
+            logger (BoundLoggerLazyProxy): The logger to log messages.
+
+        Returns:
+            URIRef: The URI reference of the property added to the RDF graph.
+        """
+        prop_uri = namespace[prop.id]
+
+        # Define the property as an OWL class inheriting from PropertyType
+        graph.add((prop_uri, RDF.type, OWL.Thing))
+        graph.add((prop_uri, RDFS.subClassOf, namespace.PropertyType))
+
+        # Add attributes like id, code, description in English and Deutsch, property_label, data_type
+        graph.add((prop_uri, RDFS.label, Literal(prop.id, lang="en")))
+        graph.add((prop_uri, DC.identifier, Literal(prop.code)))
+        descriptions = prop.description.split("//")
+        if len(descriptions) > 1:
+            graph.add((prop_uri, RDFS.comment, Literal(descriptions[0], lang="en")))
+            graph.add((prop_uri, RDFS.comment, Literal(descriptions[1], lang="de")))
+        else:
+            graph.add((prop_uri, RDFS.comment, Literal(prop.description, lang="en")))
+        graph.add(
+            (prop_uri, namespace.propertyLabel, Literal(prop.property_label, lang="en"))
+        )
+        graph.add((prop_uri, namespace.dataType, Literal(prop.data_type.value)))
+        if prop.data_type.value == "OBJECT":
+            # entity_ref_uri = BAM[code_to_class_name(obj.object_code)]
+            # graph.add((prop_uri, BAM.referenceTo, entity_ref_uri))
+            object_code = code_to_class_name(prop.object_code, logger)
+            if not object_code:
+                logger.error(
+                    f"Failed to identify the `object_code` for the property {prop.id}"
+                )
+                return prop_uri
+            entity_ref_uri = namespace[object_code]
+
+            # Create a restriction with referenceTo
+            restriction = BNode()
+            graph.add((restriction, RDF.type, OWL.Restriction))
+            graph.add((restriction, OWL.onProperty, namespace["referenceTo"]))
+            graph.add((restriction, OWL.someValuesFrom, entity_ref_uri))
+
+            # Add the restriction as a subclass of the property
+            graph.add((prop_uri, RDFS.subClassOf, restriction))
+        return prop_uri
+
     # skos:prefLabel used for class names
     # skos:definition used for `description` (en, de)
     # dc:identifier used for `code`  # ! only defined for internal codes with $ symbol
@@ -218,7 +280,18 @@ class BaseEntity(BaseModel):
     # ? For OBJECT TYPES
     # ? `generated_code_prefix`, `auto_generated_codes`?
     @no_type_check
-    def model_to_rdf(self, namespace: "Namespace", graph: "Graph") -> None:
+    def model_to_rdf(
+        self, namespace: "Namespace", graph: "Graph", logger: "BoundLoggerLazyProxy"
+    ) -> None:
+        """
+        Convert the entity to RDF triples and add them to the graph. The function uses the
+        `_add_properties_rdf` method to convert the properties assigned to the entity to RDF triples.
+
+        Args:
+            namespace (Namespace): The namespace to use for the RDF graph.
+            graph (Graph): The RDF graph to which the entity is added.
+            logger (BoundLoggerLazyProxy): The logger to log messages.
+        """
         entity_uri = namespace[self.defs.id]
 
         # Define the entity as an OWL class inheriting from the specific namespace type
@@ -252,7 +325,7 @@ class BaseEntity(BaseModel):
             )
         # Adding properties relationships to the entities
         for assigned_prop in self._base_attrs:
-            prop_uri = namespace[assigned_prop.id]
+            prop_uri = self._add_properties_rdf(namespace, graph, assigned_prop, logger)
             restriction = BNode()
             graph.add((restriction, RDF.type, OWL.Restriction))
             if assigned_prop.mandatory:
