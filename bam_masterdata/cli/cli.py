@@ -432,9 +432,6 @@ def checker(file_path, mode, datamodel_path):
                     f"There are problems when checking the incoming model in {file_path} against the current model {datamodel_path} for entity {entity} that need to be solved"
                 )
 
-
-
-
     # Check if there are individual repository problems
     if (
         mode in ["individual"]
