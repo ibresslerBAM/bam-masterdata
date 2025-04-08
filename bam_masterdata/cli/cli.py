@@ -1,6 +1,8 @@
+import glob
+import inspect
 import json
 import os
-import subprocess
+import shutil
 import time
 from pathlib import Path
 
@@ -15,6 +17,7 @@ from bam_masterdata.cli.entities_to_rdf import entities_to_rdf
 from bam_masterdata.cli.fill_masterdata import MasterdataCodeGenerator
 from bam_masterdata.logger import logger
 from bam_masterdata.metadata.entities_dict import EntitiesDict
+from bam_masterdata.openbis.login import ologin
 from bam_masterdata.utils import (
     DATAMODEL_DIR,
     delete_and_create_dir,
@@ -429,6 +432,9 @@ def checker(file_path, mode, datamodel_path):
                     f"There are problems when checking the incoming model in {file_path} against the current model {datamodel_path} for entity {entity} that need to be solved"
                 )
 
+
+
+
     # Check if there are individual repository problems
     if (
         mode in ["individual"]
@@ -453,6 +459,118 @@ def checker(file_path, mode, datamodel_path):
         raise click.ClickException(
             "Problems found in the datamodel. Please, check the logs."
         )
+
+
+@cli.command(
+    name="push_to_openbis",
+    help="Uploads to openBIS the entities contained in the file specified in the tag `--file-path` after passing correctly all the checks from the `checker`.",
+)
+@click.option(
+    "--file-path",
+    "file_path",  # alias
+    type=click.Path(exists=True),
+    required=True,
+    help="""The path to the file or directory containing Python modules or the Excel file to be checked.""",
+)
+@click.option(
+    "--datamodel-path",
+    "datamodel_path",  # alias
+    type=click.Path(exists=True, dir_okay=True),
+    default=DATAMODEL_DIR,
+    help="""Path to the directory containing the Python modules defining the datamodel (defaults to './bam_masterdata/datamodel/').""",
+)
+def push_to_openbis(file_path, datamodel_path):
+    # Check if the path is a single .py file OR a directory containing .py files
+    if file_path.endswith(".py") or (
+        os.path.isdir(file_path) and any(glob.glob(os.path.join(file_path, "*.py")))
+    ):
+        source_type = "python"
+    elif file_path.endswith(".xlsx"):
+        source_type = "excel"
+    else:
+        source_type = None
+        logger.warning(f"Unsupported source type for path: {file_path}")
+
+    # Handle source_type
+    if source_type == "python":
+        # Copy all .py files to the tmp directory
+        if os.path.isdir(file_path):
+            tmp_dir = file_path
+        else:
+            tmp_dir = os.path.dirname(file_path)
+        logger.info(f"Copied Python files to {tmp_dir}")
+
+    elif source_type == "excel":
+        tmp_dir = "./bam_masterdata/tmp"
+        os.makedirs(tmp_dir, exist_ok=True)
+
+        generator = MasterdataCodeGenerator(path=file_path, row_cell_info=True)
+
+        for module_name in ["collection", "dataset", "object", "vocabulary"]:
+            output_file = Path(os.path.join(tmp_dir, f"{module_name}_types.py"))
+
+            # Get the method from `MasterdataCodeGenerator`
+            code = getattr(generator, f"generate_{module_name}_types")().rstrip()
+
+            if code != "":
+                output_file.write_text(code + "\n", encoding="utf-8")
+                click.echo(f"Generated {module_name} types in {output_file}\n")
+            else:
+                click.echo(f"Skipping {module_name}_types.py (empty entity data)")
+        logger.info(f"Processed Excel file and exported to {tmp_dir}")
+
+    # Instantiate the checker class and run validation
+    checker = MasterdataChecker()
+
+    # Load current model from datamodel path
+    checker.load_current_model(datamodel_dir=datamodel_path)
+
+    # Load new entities from the specified file path (could be a Python file, directory, or Excel)
+    checker.load_new_entities(source=file_path)
+
+    # Run the checker in the specified mode
+    validation_results = checker.check(mode="individual")
+
+    if not validation_results.get("incoming_model"):
+        logger.info("No problems found in the new entities definition.")
+
+    # If there are no problems, push to openBIS
+    if all(
+        isinstance(value, dict) and all(not sub_value for sub_value in value.values())
+        for value in validation_results.values()
+    ):
+        click.echo("No problems found in the datamodel and incoming model.")
+        # Push to openBIS
+
+        url = environ("OPENBIS_URL")
+        openbis = ologin(url=url)
+        click.echo(f"Using the openBIS instance: {url}\n")
+
+        # Push each entity type
+        for module_path in listdir_py_modules(tmp_dir):
+            module = import_module(module_path=module_path)
+            for _, obj in inspect.getmembers(module, inspect.isclass):
+                if hasattr(obj, "defs") and callable(getattr(obj, "to_openbis")):
+                    obj_instance = obj()
+                    obj_instance.to_openbis(openbis=openbis, logger=logger)
+
+    else:
+        logger.error(
+            f"The checking of the new entities definition located in {file_path} did not pass. Please, check your entity definitions."
+        )
+        click.echo(
+            f"There are problems in the incoming model located in {file_path} that need to be solved"
+        )
+        return
+
+    if source_type == "excel":
+        # Clean up the tmp directory
+        shutil.rmtree(tmp_dir)
+        click.echo(f"Temporary files in {tmp_dir} have been deleted.")
+
+    logger.info(
+        f"Push to openBIS of the new entities located in {file_path} completed."
+    )
 
 
 if __name__ == "__main__":

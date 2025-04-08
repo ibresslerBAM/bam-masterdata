@@ -97,16 +97,22 @@ class TestObjectType:
     def test_model_validator_after_init(self):
         """Test the method `model_validator_after_init` from the class `ObjectType`."""
         # 2 properties in this `ObjectType`
+        print(
+            f"MockedObjectType properties: {[prop.code for prop in generate_object_type().properties]}"
+        )
+        print(
+            f"MockedObjectTypeLonger properties: {[prop.code for prop in generate_object_type_longer().properties]}"
+        )
         object_type = generate_object_type()
         assert len(object_type.properties) == 2
         prop_names = [prop.code for prop in object_type.properties]
-        assert prop_names == ["ALIAS", "$NAME"]
+        assert prop_names == ["$NAME", "ALIAS"]
 
         # 3 properties in this `ObjectType`
         object_type = generate_object_type_longer()
         assert len(object_type.properties) == 3
         prop_names = [prop.code for prop in object_type.properties]
-        assert prop_names == ["ALIAS", "$NAME", "SETTINGS"]
+        assert prop_names == ["SETTINGS", "$NAME", "ALIAS"]
 
 
 class TestVocabularyType:

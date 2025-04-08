@@ -67,7 +67,7 @@ class MasterdataValidator:
 
         if mode == "individual":
             self.logger.info(
-                "Validating new DSST entities and comparing them with current model..."
+                "Validating new entities and comparing them with current model..."
             )
             self.validation_results = {
                 "incoming_model": {},
@@ -427,6 +427,11 @@ class MasterdataValidator:
                         is_terms=True,
                     )
 
+        if not self.validation_results.get("comparisons"):
+            logger.info(
+                "No critical conflicts found between new entities compared to the current model."
+            )
+
         return self.validation_results
 
     def _compare_assigned_properties(
@@ -524,7 +529,7 @@ class MasterdataValidator:
                 )
                 other_entity_props = {prop["code"] for prop in other_entity_properties}
 
-                if incoming_prop_codes == other_entity_props:
+                if (incoming_prop_codes == other_entity_props) and incoming_prop_codes:
                     log_message = (
                         "Entity will not be imported in openBIS. "
                         f"The entity {entity_code} at row {incoming_entity['defs'].get('row_location')} has the same properties defined as {other_entity_code}. "
