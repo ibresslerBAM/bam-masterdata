@@ -1,4 +1,3 @@
-import json
 import os
 import re
 from typing import TYPE_CHECKING, Any, Optional, Union
@@ -12,6 +11,7 @@ import openpyxl
 
 from bam_masterdata.logger import logger
 from bam_masterdata.metadata.definitions import DataType
+from bam_masterdata.utils import VALIDATION_RULES_DIR
 
 
 class MasterdataExcelExtractor:
@@ -29,7 +29,7 @@ class MasterdataExcelExtractor:
         if not MasterdataExcelExtractor.VALIDATION_RULES:
             self.VALIDATION_RULES = load_validation_rules(
                 self.logger,
-                file_path="./bam_masterdata/checker/validation_rules/excel_validation_rules.json",
+                os.path.join(VALIDATION_RULES_DIR, "excel_validation_rules.json"),
             )
 
     def index_to_excel_column(self, index: int) -> str:
@@ -414,13 +414,21 @@ class MasterdataExcelExtractor:
             "Vocabulary code",
             "Metadata",
             "Dynamic script",
-            "Unique",
-            "Internal assignment",
+            # ! these are not used
+            # "Unique",
+            # "Internal assignment",
         ]
 
         # Determine the header row index
         header_index = start_index_row + 3
-        row_headers = [cell.value for cell in sheet[header_index]]
+        row_headers = [(cell.value, cell.coordinate) for cell in sheet[header_index]]
+        # And store how many properties are for the entity
+        n_properties = last_non_empty_row - header_index
+        if n_properties < 0:
+            self.logger.error(
+                f"No properties found for the entity in sheet {sheet.title} starting at row {start_index_row}."
+            )
+            return property_dict
 
         # Initialize a dictionary to store extracted columns
         extracted_columns: dict[str, list] = {term: [] for term in expected_terms}
@@ -428,8 +436,8 @@ class MasterdataExcelExtractor:
             extracted_columns["row_location"] = []
 
         # Extract columns for each expected term
-        for term in expected_terms:
-            if term not in row_headers:
+        for i, (term, coordinate) in enumerate(row_headers):
+            if term not in expected_terms:
                 log_func = (
                     self.logger.warning
                     if term
@@ -439,48 +447,55 @@ class MasterdataExcelExtractor:
                         "Section",
                         "Metadata",
                         "Dynamic script",
-                        "Unique",
-                        "Internal assignment",
                         "Vocabulary code",
+                        # ! these are not used
+                        # "Unique",
+                        # "Internal assignment",
                     )
                     else self.logger.error
                 )
                 log_func(f"'{term}' not found in the properties headers.", term=term)
                 continue
 
-            # Get column index and Excel letter
-            term_index = row_headers.index(term) + 1
-            term_letter = self.index_to_excel_column(term_index)
+            # Excel column letter from the coordinate
+            term_letter = coordinate[0]
 
             # Extract values from the column
-            for i in range(header_index + 1, last_non_empty_row + 1):
-                cell = sheet[term_letter + str(i)]
+            for cell_property in sheet[term_letter][header_index:last_non_empty_row]:
                 extracted_columns[term].append(
-                    self.process_term(term, cell.value, cell.coordinate, sheet.title)
+                    self.process_term(
+                        term, cell_property.value, cell_property.coordinate, sheet.title
+                    )
                 )
                 if self.row_cell_info:
-                    extracted_columns["row_location"].append(term_letter + str(i))
-            # for cell in sheet[term_letter][header_index:last_non_empty_row]:
-            #     extracted_columns[term].append(
-            #         self.process_term(term, cell.value, cell.coordinate, sheet.title)
-            #     )
+                    extracted_columns["row_location"].append(cell_property.coordinate)
 
         # Combine extracted values into a dictionary
-        for i in range(len(extracted_columns["Code"])):
-            property_dict[extracted_columns["Code"][i]] = {
-                "permId": extracted_columns["Code"][i],
-                "code": extracted_columns["Code"][i],
-                "description": extracted_columns["Description"][i],
-                "section": extracted_columns["Section"][i],
-                "mandatory": extracted_columns["Mandatory"][i],
-                "show_in_edit_views": extracted_columns["Show in edit views"][i],
-                "label": extracted_columns["Property label"][i],
-                "dataType": extracted_columns["Data type"][i],
-                "vocabularyCode": extracted_columns["Vocabulary code"][i],
-            }
+        for i in range(n_properties):
+            code = extracted_columns.get("Code", [])
+            if not code:
+                self.logger.error(
+                    f"'Code' not found in the properties headers for sheet {sheet.title}."
+                )
+                return property_dict
+            code = code[i]
+            property_dict[code] = {"permId": code, "code": code}
+            for key, pybis_val in {
+                "Description": "description",
+                "Section": "section",
+                "Mandatory": "mandatory",
+                "Show in edit views": "show_in_edit_views",
+                "Property label": "label",
+                "Data type": "dataType",
+                "Vocabulary code": "vocabularyCode",
+            }.items():
+                data_column = extracted_columns.get(key, [])
+                if not data_column:
+                    continue
+                property_dict[code][pybis_val] = data_column[i]
             if self.row_cell_info:
-                property_dict[extracted_columns["Code"][i]]["row_location"] = (
-                    extracted_columns["row_location"][i]
+                property_dict[code]["row_location"] = (
+                    extracted_columns.get("row_location")[i],
                 )
             # Only add optional fields if they exist in extracted_columns
             optional_fields = [
