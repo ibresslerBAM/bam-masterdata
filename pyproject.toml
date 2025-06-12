@@ -8,7 +8,6 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -17,7 +16,7 @@ name = "bam-masterdata"
 description = "The BAM Data Store utility tools and masterdata models wrapped in a Python package with a front-end web interface."
 dynamic = ["version"]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [
   { name = "BAM Data Store", email = "datastore@bam.de" },
 ]
@@ -31,12 +30,15 @@ dependencies = [
   "click",
   "pydantic~=2.10.5",
   "rdflib",
-  "h5py~=3.12.1"
+  "h5py~=3.12.1",
+  "python-decouple",
+  "structlog==24.4.0",
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/BAMresearch/bam-masterdata"
 "Bug Tracker" = "https://github.com/BAMresearch/bam-masterdata/issues"
+"Documentation" = "https://bamresearch.github.io/bam-masterdata/"
 
 [project.optional-dependencies]
 dev = [
@@ -45,8 +47,6 @@ dev = [
   "pytest",
   "pytest-timeout",
   "pytest-cov",
-  "python-decouple",
-  "structlog==24.4.0",
 ]
 docu = [
   "mkdocs-material",
