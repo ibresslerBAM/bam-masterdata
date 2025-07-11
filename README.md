@@ -17,7 +17,7 @@
 
 </h4>
 
-The BAM Masterdata is a repository containing all the masterdata schema defining in BAM, as well as some utility functions to handle the masterdata.
+The BAM Masterdata repository contains the masterdata schemas defined at BAM and provides utility functions for working with them.
 
 If you want to install it, do:
 ```sh
@@ -40,14 +40,18 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Run the following script for Linux or MacOS:
-```sh
-./scripts/install_python_dependencies
-```
-or for Windows:
-```sh
-scripts/install_python_dependencies.bat
-```
+Run the following script depending on your OS:
+- *Linux/MacOS*:
+  ```sh
+  ./scripts/install_python_dependencies.sh
+  ```
+- *Windows*:
+  ```sh
+  scripts/install_python_dependencies.bat
+  ```
+
+**Note**: This script installs the required dependencies for development, testing, and documentation, using `uv` and `pip`.
+
 ### Run the tests
 
 You can locally run the tests by doing:
@@ -75,52 +79,21 @@ ruff check .
 This will produce an output with the specific issues found. In order to auto-fix them, run:
 
 ```sh
-ruff format . --check
+ruff format .
 ```
 
 If some issues are not possible to fix automatically, you will need to visit the file and fix them by hand.
 
-### Run the local website
-
-**Under construction!**
-
-<!-- ### Debugging
-
-For interactive debugging of the tests, use `pytest` with the `--pdb` flag. We recommend using an IDE for debugging, e.g., _VSCode_. If that is the case, add the following snippet to your `.vscode/launch.json`:
-```json
-{
-  "configurations": [
-      {
-        "name": "<descriptive tag>",
-        "type": "debugpy",
-        "request": "launch",
-        "cwd": "${workspaceFolder}",
-        "program": "${workspaceFolder}/.pyenv/bin/pytest",
-        "justMyCode": true,
-        "env": {
-            "_PYTEST_RAISE": "1"
-        },
-        "args": [
-            "-sv",
-            "--pdb",
-            "<path-to-plugin-tests>",
-        ]
-    }
-  ]
-}
-```
-
-where `<path-to-plugin-tests>` must be changed to the local path to the test module to be debugged.
-
-The settings configuration file `.vscode/settings.json` automatically applies the linting and formatting upon saving the modified file. -->
 
 ### Documentation on Github pages
 
-To view the documentation locally, make sure to have installed the extra packages (this is part of the `scripts/install_python_dependencies.sh`, so if you ran this script before, you don't need to do it again now):
+To view the documentation locally, make sure to have installed the extra packages (this is part of the `scripts/install_python_dependencies.*`, so if you ran this script before, you don't need to do it again now):
 
 ```sh
 uv pip install -e '[docu]'
 ```
+
+**Note**: This command installs `mkdocs`, `mkdocs-material`, and other documentation-related dependencies.
 
 The first time, build the server:
 
