@@ -29,7 +29,7 @@ pip install bam-masterdata
 If you want to develop locally this package, clone the project and enter in the workspace folder:
 
 ```sh
-git clone https://git.bam.de/bam-data-store/bam-masterdata.git
+git clone https://github.com/BAMresearch/bam-masterdata.git
 cd bam-masterdata
 ```
 
@@ -40,8 +40,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Run the following script:
-
+Run the following script for Linux or MacOS:
 ```sh
 ./scripts/install_python_dependencies
 ```
