@@ -126,21 +126,3 @@ The main code developers are:
 | ------------------- | ------------------------------------------------------------ |
 | Carlos Madariaga    | [carlos.madariaga@bam.de](mailto:carlos.madariaga@bam.de)       |
 | Dr. Jose M. Pizarro | [jose.pizarro-blanco@bam.de](mailto:jose.pizarro-blanco@bam.de) |
-
-
-The main datamodel developers are:
-
-- Angela Ariza de Schellenberger
-- Ingo Bressler
-- Rukeia El-Athman
-- Çağtay Fabry
-- Tobias Fritsch
-- Ralf Herrmann
-- Zoltán Konthur
-- Julius Kruse
-- Pavlina Kruzikova
-- Tarakeshwar Lakshmipathy
-- Julien Lecompagnon
-- Jan Lisec
-- Mathias Röllig
-- Bastian Rühle
