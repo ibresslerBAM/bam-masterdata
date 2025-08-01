@@ -109,15 +109,74 @@ class TestObjectType:
             f"MockedObjectTypeLonger properties: {[prop.code for prop in generate_object_type_longer().properties]}"
         )
         object_type = generate_object_type()
-        assert len(object_type.properties) == 2
+        assert len(object_type.properties) == 3
         prop_names = [prop.code for prop in object_type.properties]
-        assert prop_names == ["$NAME", "ALIAS"]
+        assert prop_names == ["$NAME", "ALIAS", "$STORAGE.STORAGE_VALIDATION_LEVEL"]
 
         # 3 properties in this `ObjectType`
         object_type = generate_object_type_longer()
-        assert len(object_type.properties) == 3
+        assert len(object_type.properties) == 4
         prop_names = [prop.code for prop in object_type.properties]
-        assert prop_names == ["SETTINGS", "$NAME", "ALIAS"]
+        assert prop_names == [
+            "SETTINGS",
+            "$NAME",
+            "ALIAS",
+            "$STORAGE.STORAGE_VALIDATION_LEVEL",
+        ]
+
+    def test_setattr(self):
+        """Test the method `__setattr__` from the class `ObjectType`."""
+        object_type = generate_object_type()
+        assert "name" in object_type._property_metadata
+        assert isinstance(
+            object_type._property_metadata["name"], PropertyTypeAssignment
+        )
+        assert isinstance(object_type.name, PropertyTypeAssignment)
+
+        # Valid type
+        object_type.name = "Test Object"
+        assert object_type.name == "Test Object" and isinstance(object_type.name, str)
+
+        object_type.storage_storage_validation_level = "BOX"
+        assert object_type.storage_storage_validation_level == "BOX" and isinstance(
+            object_type.storage_storage_validation_level, str
+        )
+
+        # Invalid types
+        with pytest.raises(
+            TypeError, match="Invalid type for 'name': Expected str, got int"
+        ):
+            object_type.name = 42
+        with pytest.raises(
+            TypeError, match="Invalid type for 'name': Expected str, got bool"
+        ):
+            object_type.name = True
+
+        with pytest.raises(
+            ValueError,
+            match="42 for storage_storage_validation_level is not in the list of allowed terms for vocabulary.",
+        ):
+            object_type.storage_storage_validation_level = 42
+        with pytest.raises(
+            ValueError,
+            match="Test Storage for storage_storage_validation_level is not in the list of allowed terms for vocabulary.",
+        ):
+            object_type.storage_storage_validation_level = "Test Storage"
+
+    @pytest.mark.parametrize(
+        "code, result",
+        [
+            ("$DEFAULT_COLLECTION_VIEWS", True),
+            ("VOCABULARY_NOT_FOUND", False),
+        ],
+    )
+    def test_get_vocabulary_class(self, code, result):
+        """Test the name conversion for `VocabularyType`."""
+        vocab_path = "tests/data/metadata/example_vocabulary.py"
+        object_type = generate_object_type()
+
+        vocabulary_class = object_type.get_vocabulary_class(code, vocab_path)
+        assert (vocabulary_class is not None) is result
 
 
 class TestVocabularyType:

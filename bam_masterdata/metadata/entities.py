@@ -1,3 +1,4 @@
+import inspect
 import json
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, no_type_check
@@ -6,6 +7,8 @@ import h5py
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from rdflib import BNode, Literal
 from rdflib.namespace import DC, OWL, RDF, RDFS
+
+from bam_masterdata.utils import DATAMODEL_DIR, import_module, listdir_py_modules
 
 if TYPE_CHECKING:
     from pybis import Openbis
@@ -496,6 +499,70 @@ class ObjectType(BaseEntity):
     Note this is also used for `CollectionType` and `DatasetType`, as they also contain a list of
     properties.
     """
+
+    def __setattr__(self, key, value):
+        if key == "_property_metadata":
+            super().__setattr__(key, value)
+            return
+        if key not in self._property_metadata:
+            raise KeyError(f"Key '{key}' not found in _property_metadata.")
+        if not isinstance(self._property_metadata[key], PropertyTypeAssignment):
+            return super().__setattr__(key, value)
+
+        data_type = self._property_metadata[key].data_type
+        if data_type == "CONTROLLEDVOCABULARY":
+            vocabulary_code = self._property_metadata[key].vocabulary_code
+            if not vocabulary_code:
+                raise ValueError(
+                    f"Property '{key}' of type CONTROLLEDVOCABULARY must have a vocabulary_code defined."
+                )
+
+            # get the class of the vocabulary type
+            vocab_path = None
+            for file in listdir_py_modules(DATAMODEL_DIR):
+                if "vocabulary_types.py" in file:
+                    vocab_path = file
+                    break
+            if vocab_path is None:
+                raise FileNotFoundError(
+                    "The file 'vocabulary_types.py' was not found in the directory specified by DATAMODEL_DIR."
+                )
+
+            vocabulary_class = self.get_vocabulary_class(vocabulary_code, vocab_path)
+            if vocabulary_class is None:  # Error handling if no matching class is found
+                raise ValueError(
+                    f"No matching vocabulary class found for vocabulary_code '{vocabulary_code}'."
+                )
+            codes = [term.code for term in vocabulary_class.terms]
+
+            if value in codes:
+                return object.__setattr__(self, key, value)
+            else:
+                raise ValueError(
+                    f"{value} for {key} is not in the list of allowed terms for vocabulary."
+                )
+        # TODO add check for OBJECT data type
+        super().__setattr__(key, value)
+
+    def get_vocabulary_class(self, vocabulary_code, vocab_path: str):
+        """Get the class of the vocabulary type defined in the module `vocab_path`.
+
+        Args:
+            vocabulary_code (str): Name of the vocabulary type to get the class for.
+            vocab_path (str): Path to the module containing the vocabulary types.
+
+        Returns:
+            Vocabulary_Class: The class of the vocabulary type if found, otherwise None.
+        """
+
+        module = import_module(vocab_path)
+        vocabulary_class = None
+        for name, obj in inspect.getmembers(module, inspect.isclass):
+            if name == code_to_class_name(vocabulary_code):
+                vocabulary_class = obj()
+                break
+
+        return vocabulary_class if vocabulary_class else None
 
     model_config = ConfigDict(
         ignored_types=(
