@@ -619,18 +619,26 @@ def run_parser(
             f"Space {openbis.username} does not exist in openBIS. Please create it first."
         )
         return
-    project = space.new_project(
-        code=project_name,
-        description="New project created via automated parsing with `bam_masterdata`.",
-    )
+    if project_name.upper() in [p.code for p in space.get_projects()]:
+        project = space.get_project(project_name)
+    else:
+        project = space.new_project(
+            code=project_name,
+            description="New project created via automated parsing with `bam_masterdata`.",
+        )
     project.save()
 
     # Create a new pybis `COLLECTION` to store the generated objects
-    collection_openbis = openbis.new_collection(
-        code=collection_name,
-        type="COLLECTION",
-        project=project,
-    )
+    if collection_name.upper() in [c.code for c in project.get_collections()]:
+        collection_openbis = space.get_collection(
+            f"/{openbis.username}/{project_name}/{collection_name}".upper()
+        )
+    else:
+        collection_openbis = openbis.new_collection(
+            code=collection_name,
+            type="COLLECTION",
+            project=project,
+        )
     collection_openbis.save()
 
     # Create a bam_masterdata CollectionType instance for storing parsed results
@@ -658,11 +666,21 @@ def run_parser(
             props=obj_props,
         )
         object_openbis.save()
+
         # save local and openbis IDs to map parent-child relationships
         openbis_id_map[object_id] = object_openbis.identifier
         click.echo(
             f"Object {obj_props.get('$name')} stored in openBIS collection {collection_name}."
         )
+    for _, files in files_parser.items():
+        # Upload the file to openBIS
+        dataset = openbis.new_dataset(
+            type="RAW_DATA",
+            files=files,
+            collection=collection_openbis,
+        )
+        dataset.save()
+        click.echo(f"Files uploaded to openBIS collection {collection_name}.")
 
     # Map parent-child relationships
     for parent_id, child_id in collection.relationships.values():
