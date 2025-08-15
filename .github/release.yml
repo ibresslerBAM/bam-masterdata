@@ -12,8 +12,6 @@ changelog:
       labels: [fix]
     - title: 📖 Documentation
       labels: [docs]
-    - title: 🧹 House-Keeping
-      labels: [housekeeping]
     - title: 🚀 Performance
       labels: [performance]
     - title: 🚧 CI
@@ -28,9 +26,5 @@ changelog:
       labels: [pkg]
     - title: 📦 Dependencies
       labels: [dependencies, outdated]
-    - title: 🏷️ Type Hints
-      labels: [types]
-    - title: 🧹 Linting
-      labels: [linting]
     - title: 🤷‍♂️ Other Changes
       labels: ['*']
