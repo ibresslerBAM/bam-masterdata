@@ -590,6 +590,7 @@ def run_parser(
     files_parser: dict[AbstractParser, list[str]] = {},
     project_name: str = "PROJECT",
     collection_name: str = "COLLECTION",
+    space_name: str = None,
 ) -> None:
     """
     Run the parsers on the specified files and collect the results.
@@ -614,12 +615,29 @@ def run_parser(
         return
 
     # Specify the space and project for the data
-    space = openbis.get_space(openbis.username)
+    try:
+        space = openbis.get_space(space_name)
+    except Exception:
+        space = None
+
     if space is None:
-        logger.error(
-            f"Space {openbis.username} does not exist in openBIS. Please create it first."
-        )
-        return
+        # user name as default space
+        for s in openbis.get_spaces():
+            if s.code.endswith(openbis.username.upper()):
+                space = s
+                logger.warning(
+                    f"Space {space_name} does not exist in openBIS. "
+                    f"Loading data in {openbis.username}."
+                )
+                break
+
+        # no space found
+        if space is None:
+            logger.error(
+                f"No usable Space for {openbis.username}  in openBIS. Please create it first or notify an Admin."
+            )
+            return
+
     if project_name.upper() in [p.code for p in space.get_projects()]:
         project = space.get_project(project_name)
     else:
@@ -677,12 +695,16 @@ def run_parser(
         )
     for _, files in files_parser.items():
         # Upload the file to openBIS
-        dataset = openbis.new_dataset(
-            type="RAW_DATA",
-            files=files,
-            collection=collection_openbis,
-        )
-        dataset.save()
+        try:
+            dataset = openbis.new_dataset(
+                type="RAW_DATA",
+                files=files,
+                collection=collection_openbis,
+            )
+            dataset.save()
+        except Exception as e:
+            logger.warning(f"Error uploading files {files} to openBIS: {e}")
+            continue
         click.echo(f"Files uploaded to openBIS collection {collection_name}.")
 
     # Map parent-child relationships
@@ -714,8 +736,8 @@ def run_parser(
     help="Parser name and file path tuple: 'ExampleParser file1.txt'",
 )
 @click.option(
-    "--project_name",
-    "project-name",  # alias
+    "--project-name",
+    "project_name",  # alias
     type=str,
     required=True,
     help="OpenBIS project name",
@@ -727,7 +749,14 @@ def run_parser(
     required=True,
     help="OpenBIS collection name",
 )
-def parser(files_parser, project_name, collection_name):
+@click.option(
+    "--space-name",
+    "space_name",  # alias
+    type=str,
+    required=False,
+    help="OpenBIS space name",
+)
+def parser(files_parser, project_name, collection_name, space_name):
     parser_map = {}  # TODO load from configuration from yaml file
     parse_file_dict = {}
     for parser_key, filepath in files_parser:
@@ -744,6 +773,7 @@ def parser(files_parser, project_name, collection_name):
         files_parser=parse_file_dict,
         project_name=project_name,
         collection_name=collection_name,
+        space_name=space_name,
     )
 
 
