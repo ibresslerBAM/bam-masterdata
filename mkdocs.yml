@@ -7,14 +7,15 @@ nav:
   - Tutorial: tutorials/tutorial.md
   - How-to guides:
     - Overview: howtos/overview.md
+    - Parsing:
+      - Use the Parser app: howtos/parsing/parser_app.md
+      - Create new parsers: howtos/parsing/create_new_parsers.md
+      - Work wik Object Types: howtos/parsing/use_object_types.md
   - Explanations:
-    - Data Store: explanations/data-store.md
-    - OpenBIS : explanations/openbis.md
-    - pyBIS : explanations/pybis.md
+    - Parsing Structure: explanations/parsing_structure.md
+    - Schema Definitions: explanations/schema_defs.md
   - References:
-    - Collection: references/collection.md
-    - Controlled Vocabulary: references/controlled-vocabulary.md
-    - Dataset: references/dataset.md
+    - Glossary: references/glossary.md
 theme:
   name: material
   palette:
