@@ -4,33 +4,23 @@ site_author: BAM Data Store
 repo_url: https://github.com/BAMresearch/bam-masterdata
 nav:
   - Home: index.md
-  - Tutorial: tutorials/tutorial.md
-  - How-to guides:
-    - Overview: howtos/overview.md
+  - Tutorials:
+    - Getting Started: tutorials/tutorial.md
+  - How-to Guides:
     - Parsing:
       - Use the Parser app: howtos/parsing/parser_app.md
       - Create new parsers: howtos/parsing/create_new_parsers.md
-      - Work wik Object Types: howtos/parsing/use_object_types.md
   - Explanations:
     - Parsing Structure: explanations/parsing_structure.md
     - Schema Definitions: explanations/schema_defs.md
   - References:
     - Glossary: references/glossary.md
+    - API Reference: references/api.md
 theme:
   name: material
   palette:
     primary: custom
     accent: custom
-    # - scheme: default
-    # - media: "(prefers-color-scheme: light)"
-    #   toggle:
-    #     icon: material/weather-sunny
-    #     name: Switch to light mode
-    # - scheme: slate
-    # - media: "(prefers-color-scheme: dark)"
-      # toggle:
-      #   icon: material/weather-night
-      #   name: Switch to dark mode
   logo: assets/bammasterdata_blue_transparent.png
   favicon: assets/bammasterdata_blue_transparent.png
   features:

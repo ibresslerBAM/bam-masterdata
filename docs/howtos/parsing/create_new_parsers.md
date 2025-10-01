@@ -1,11 +1,11 @@
 # How-to: Create new parsers
 
-This guide explains how to create a custom parser that reads raw files (CSV, Excel, JSON, XML, etc) and transforms them into the `bam-masterdata` format. By following these steps, your parser can be integrated into the Data Store workflow and used in the [Parser app](parser_app.md).
+This how-to guide explains how to create a custom parser that reads raw files (CSV, Excel, JSON, XML, etc) and transforms them into the `bam-masterdata` format. By following these steps, your parser can be integrated into the Data Store workflow and used in the [Parser app](parser_app.md).
 This allows you to bring custom or third-party data sources into the existing masterdata workflows without manual conversion.
 
 !!! note "Prerequisites"
     - **Python ≥ 3.10** installed
-    - Knowledge of the **bam-masterdata** schema definitions in [`bam_masterdata/datamodel/`](https://github.com/BAMresearch/bam-masterdata/tree/main/bam_masterdata/datamodel). Learn more in [Work with Object Types](use_object_types.md).
+    - Knowledge of the **bam-masterdata** schema definitions in [`bam_masterdata/datamodel/`](https://github.com/BAMresearch/bam-masterdata/tree/main/bam_masterdata/datamodel). Learn more in [Schema Definitions](../../explanations/schema_defs.md).
 
 ---
 
