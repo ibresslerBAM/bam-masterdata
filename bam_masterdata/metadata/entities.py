@@ -42,6 +42,13 @@ class BaseEntity(BaseModel):
     adding new methods that are useful for interfacing with openBIS.
     """
 
+    code: str | None = Field(
+        default=None,
+        description="""
+        Code of the entity to assign as permanent identifier in openBIS.
+        """,
+    )
+
     def __init__(self, **kwargs):
         super().__init__()
 
@@ -610,7 +617,7 @@ class ObjectType(BaseEntity):
             self._properties[key] = prop.data_type
 
     def __setattr__(self, key, value):
-        if key in ["_property_metadata", "_properties"]:
+        if key in ["_property_metadata", "_properties", "code"]:
             super().__setattr__(key, value)
             return
 
@@ -624,7 +631,7 @@ class ObjectType(BaseEntity):
                     else self._property_metadata
                 )
                 if key in meta:
-                    # Typcheck
+                    # Type check
                     expected_type = meta[key].data_type.pytype
                     if expected_type is datetime.datetime:
                         if isinstance(value, datetime.datetime):
@@ -653,7 +660,7 @@ class ObjectType(BaseEntity):
                         raise TypeError(
                             f"Invalid type for '{key}': Expected {expected_type.__name__}, got {type(value).__name__}"
                         )
-                    #  CONTROLLEDVOCABULARY-Check
+                    #  CONTROLLEDVOCABULARY check
                     data_type = meta[key].data_type
                     if data_type == "CONTROLLEDVOCABULARY":
                         vocabulary_code = meta[key].vocabulary_code
