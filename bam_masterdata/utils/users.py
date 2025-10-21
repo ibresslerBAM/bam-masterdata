@@ -63,3 +63,52 @@ class UserID:
             ):
                 return u.userId
         return None
+
+
+def get_bam_username(firstname: str, lastname: str) -> str:
+    """
+    Tries to get the BAM username from the first and last names. The BAM username guess is defined by concatenating
+    the first letter of the first name with the, max. 7 digits of the last name.
+
+    Args:
+        firstname (str): The first name.
+        lastname (str): The last name.
+
+    Returns:
+        str: The guessed BAM username.
+    """
+
+    def _de_replacements(name: str) -> str:
+        """
+        Perform common German name replacements to standardize the name.
+
+        Args:
+            name (str): Name to standardize.
+
+        Returns:
+            str: Standardized name.
+        """
+        replacements = {
+            "Ä": "Ae",
+            "Ö": "Oe",
+            "Ü": "Ue",
+            "ä": "ae",
+            "ö": "oe",
+            "ü": "ue",
+            "ß": "ss",
+        }
+        for old, new in replacements.items():
+            name = name.replace(old, new)
+        return name
+
+    # German umlaut replacements
+    firstname = _de_replacements(firstname).lower()
+    lastname = _de_replacements(lastname).lower()
+
+    # Defining username format
+    first_letter = firstname[0]
+    if len(lastname) > 7:
+        last_part = lastname[:7]
+    else:
+        last_part = lastname
+    return f"{first_letter}{last_part}"

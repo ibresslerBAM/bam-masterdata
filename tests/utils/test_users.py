@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from bam_masterdata.utils.users import UserID
+from bam_masterdata.utils.users import UserID, get_bam_username
 
 
 class TestUserID:
@@ -41,7 +41,12 @@ class TestUserID:
 
         user_id = UserID(url="https://fake")
         assert user_id.get_userid_from_fullname("John Doe") == "jdoe"
-        assert user_id.get_userid_from_fullname("Doe, John") == "jdoe"
+        assert user_id.get_userid_from_fullname("Müller, Markus") == "mmueller"
         assert user_id.get_userid_from_fullname("Jane Smith") == "jsmith"
         assert user_id.get_userid_from_fullname("Smith, Jane") == "jsmith"
         assert user_id.get_userid_from_fullname("Unknown User") is None
+
+
+def test_get_bam_username():
+    assert get_bam_username(firstname="John", lastname="Doe") == "jdoe"
+    assert get_bam_username(firstname="Markus", lastname="Müller") == "mmueller"
