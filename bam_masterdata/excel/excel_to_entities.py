@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 from typing import TYPE_CHECKING, Any
 
 from bam_masterdata.utils import is_reduced_version, load_validation_rules
@@ -577,11 +578,18 @@ class MasterdataExcelExtractor:
                     process_term_cell(term, cell.value, cell.coordinate, sheet.title)
                 )
 
-        # Combine extracted values into a dictionary
+        if not extracted_columns.get("Code"):
+            self.logger.error(
+                f"The required 'Code' column for terms was not found in sheet {sheet.title}."
+            )
+            return {}
+
+        # Combine extracted values into a dictionary safely
         for i in range(len(extracted_columns["Code"])):
-            terms_dict[extracted_columns["Code"][i]] = {
-                "permId": extracted_columns["Code"][i],
-                "code": extracted_columns["Code"][i],
+            code = extracted_columns["Code"][i]
+            terms_dict[code] = {
+                "permId": code,
+                "code": code,
             }
             for key, pybis_val in {
                 "Description": "descriptions",
@@ -589,9 +597,9 @@ class MasterdataExcelExtractor:
                 "Label": "label",
                 "Official": "official",
             }.items():
-                if extracted_columns.get(key):
-                    value = extracted_columns[key][i]
-                    terms_dict[extracted_columns["Code"][i]][pybis_val] = value
+                values = extracted_columns.get(key, [])
+                if len(values) > i:
+                    terms_dict[code][pybis_val] = values[i]
 
         return terms_dict
 
