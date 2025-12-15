@@ -20,6 +20,10 @@ def ologin(url: str | Openbis = "") -> Openbis:
         o = Openbis(url)
 
     if not o.is_session_activ():
-        o.login(environ("OPENBIS_USERNAME"), environ("OPENBIS_PASSWORD"), save_token=True)
+        o.login(
+            environ("OPENBIS_USERNAME"),
+            environ("OPENBIS_PASSWORD"),
+            save_token=True,
+        )
 
     return o
